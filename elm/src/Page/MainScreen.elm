@@ -1,11 +1,14 @@
 module Page.MainScreen exposing (..)
 
+import Task
 import Html exposing (..)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
 import Element.Input as Input
 import Browser
+import Browser.Dom exposing (Viewport)
+import Browser.Events as E
 import Page.Parts_elm_ui.List as List
 import Page.Parts_elm_ui.VideoList as VideoList
 import Page.Parts_elm_ui.ContactForm as ContactForm
@@ -13,19 +16,31 @@ import Page.Parts_elm_ui.CompanyProfile as CompanyProfile
 import Page.Parts_elm_ui.Footer as Footer
 
 main : Program () Model Msg
-main = 
-    Browser.sandbox
-        { init = initialModel
+main =
+    let
+        handleResult v =
+            case v of
+                Err err ->
+                    NoOp
+
+                Ok vp ->
+                    GotInitialViewport vp
+    in
+    Browser.element
+        { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
         , view = headerElement
         , update = update
+        , subscriptions = subscriptions
         }
         
 
 -- MODEL
 
 type alias Model =
-    {  screenTitle : Screen
-      , listStatus : Status }
+    { width : Float
+    , height : Float
+    , screenTitle : Screen
+    , listStatus : Status }
 
 type Status
     = Open
@@ -39,37 +54,69 @@ type Screen
 
 initialModel : Model
 initialModel =
-    { screenTitle = Top
-      , listStatus = Close }
+    { width = 0
+    , height = 0
+    , screenTitle = Top
+    , listStatus = Close }
 
 type Msg
-    = ChangeOpen
+    = NoOp
+    | GotInitialViewport Viewport
+    | Resize ( Float, Float )
+    | ChangeOpen
     | ChangeClose
     | ChangeTop
     | ChangeContents
     | ChangeAbout
     | ChangeContact
 
+subscriptions : model -> Sub Msg
+subscriptions _ =
+    E.onResize (\w h -> Resize ( toFloat w, toFloat h ))
+
 -- UPDATE
-update : Msg -> Model -> Model
+setCurrentDimensions : { a | width : b, height : c } -> ( b, c ) -> { a | width : b, height : c }
+setCurrentDimensions model ( w, h ) =
+    { model | width = w, height = h }
+
+setChangeListStatus : { a | listStatus : b } -> b -> { a | listStatus : b }
+setChangeListStatus model ( status ) =
+    { model | listStatus = status }
+
+setChangeScreenAndListStatus : { a | screenTitle : b, listStatus : c } -> ( b, c ) -> { a | screenTitle : b, listStatus : c }
+setChangeScreenAndListStatus model ( page, status ) =
+    { model | screenTitle = page
+            , listStatus = status}
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-  case msg of
-    ChangeOpen ->
-      { model | listStatus = Open}
-    ChangeClose ->
-      { model | listStatus = Close}
-    ChangeTop ->
-      { model | screenTitle = Top
-      , listStatus = Close}
-    ChangeContents ->
-      { model | screenTitle = Contents
-      , listStatus = Close}
-    ChangeAbout ->
-      { model | screenTitle = About
-      , listStatus = Close}
-    ChangeContact ->
-      { model | screenTitle = Contact
-      , listStatus = Close}
+    case msg of
+        GotInitialViewport vp ->
+            ( setCurrentDimensions model ( vp.scene.width, vp.scene.height ), Cmd.none )
+
+        Resize ( w, h ) ->
+            ( setCurrentDimensions model ( w, h ), Cmd.none )
+
+        NoOp ->
+            ( model, Cmd.none )
+        
+        ChangeOpen ->
+            ( setChangeListStatus model ( Open ), Cmd.none )
+
+        ChangeClose ->
+            ( setChangeListStatus model ( Close ), Cmd.none )
+
+        ChangeTop ->
+            ( setChangeScreenAndListStatus model ( Top, Close ), Cmd.none )
+
+        ChangeContents ->
+            ( setChangeScreenAndListStatus model ( Contents, Close ), Cmd.none )
+
+        ChangeAbout ->
+            ( setChangeScreenAndListStatus model ( About, Close ), Cmd.none )
+
+        ChangeContact ->
+            ( setChangeScreenAndListStatus model ( Contact, Close ), Cmd.none )
 
 
 headerElement : Model -> Html Msg
@@ -80,13 +127,13 @@ headerElement model =
               Open ->
                 column [ width <| px 350] [
                     Input.button
-                      [ paddingXY 100 10
-                      , spacing 10
-                      , width <| px 320
+                      [ paddingXY 100 (round model.height // 60)
+                      , spacing (round model.height // 60)
+                      , width <| px (round model.width // 6)
                       , height fill
                       , Background.color (rgb255 211 211 211)
                       , Font.color (rgb255 0 0 0)
-                      , Font.size 30
+                      , Font.size (round model.width // 60)
                       , centerX
                       , centerY
                       , below List.videolink
@@ -99,13 +146,13 @@ headerElement model =
               Close ->
                 column [ width <| px 350] [
                     Input.button
-                      [ paddingXY 100 10
-                      , spacing 10
-                      , width <| px 320
+                      [ paddingXY 100 (round model.height // 60)
+                      , spacing (round model.height // 60)
+                      , width <| px (round model.width // 6)
                       , height fill
                       , Background.color (rgb255 211 211 211)
                       , Font.color (rgb255 0 0 0)
-                      , Font.size 30
+                      , Font.size (round model.width // 60)
                       , centerX
                       , centerY
                       ]
@@ -121,16 +168,16 @@ headerElement model =
                   column [ width fill
                     , height  <| px 840] []
                     , column[][
-                      Input.button[paddingXY 60 10
-                        , spacing 10
-                        , width <| px 320
+                      Input.button[paddingXY (round model.width // 70) (round model.height // 60)
+                        , spacing (round model.height // 60)
+                        , width <| px (round model.width // 7)
                         , Background.color (rgb255 211 211 211)
                         , Font.color (rgb255 0 0 0)
-                        , Font.size 30
+                        , Font.size (round model.width // 60)
                         , centerX
                         , centerY
                         ]
-                        { label = Element.text <| "Play Contents"
+                        { label = Element.text <| "Play Contents!"
                           , onPress = Just ChangeContents
                           }
                     ]
@@ -164,13 +211,13 @@ headerElement model =
                   ]
                   , column [ width fill] []
                   , column [ width <| px 180] [
-                    Input.button[ paddingXY 50 10
-                      , spacing 10
-                      , width <| px 160
+                    Input.button[ paddingXY 50 (round model.height // 60)
+                      , spacing (round model.height // 60)
+                      , width <| px (round model.width // 12)
                       , height fill
                       , Background.color (rgb255 211 211 211)
                       , Font.color (rgb255 0 0 0)
-                      , Font.size 30
+                      , Font.size (round model.width // 60)
                       , centerX
                       , centerY
                     ]
@@ -179,13 +226,13 @@ headerElement model =
                     }
                     ]
                     , column [ width <| px 180] [
-                      Input.button[ paddingXY 35 10
-                        , spacing 10
-                        , width <| px 160
+                      Input.button[ paddingXY 35 (round model.height // 60)
+                        , spacing (round model.height // 60)
+                        , width <| px (round model.width // 12)
                         , height fill
                         , Background.color (rgb255 211 211 211)
                         , Font.color (rgb255 0 0 0)
-                        , Font.size 30
+                        , Font.size (round model.width // 60)
                         , centerX
                         , centerY
                         ]
@@ -195,13 +242,13 @@ headerElement model =
                         ]
                     , contentsList
                     , column [ width <| px 180] [
-                      Input.button[ paddingXY 25 10
-                        , spacing 10
-                        , width <| px 160
+                      Input.button[ paddingXY 25 (round model.height // 60)
+                        , spacing (round model.height // 60)
+                        , width <| px (round model.width // 12)
                         , height fill
                         , Background.color (rgb255 211 211 211)
                         , Font.color (rgb255 0 0 0)
-                        , Font.size 30
+                        , Font.size (round model.width // 60)
                         , centerX
                         , centerY
                         ]
@@ -209,7 +256,7 @@ headerElement model =
                         , onPress = Just ChangeContact
                         }
                     ]
-                , column [ width <| px 100] [ ]
+                , column [ width <| px (round model.height // 20)] [ ]
              ]
              , row[width fill][
                 test

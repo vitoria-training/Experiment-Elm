@@ -3,7 +3,6 @@ module Page.Footer exposing (..)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Font as Font
-import Page.CommonParts as CP
 
 -- Fixed value
 footerFontSize : Float -> Int
@@ -26,8 +25,8 @@ footerElement : Float -> Float -> Element msg
 footerElement mainScreenWidth mainScreenHeight=
     column [width fill][
         row [Element.width fill][
-            el[ Background.color CP.rgbGray
-            , Font.color CP.rgbBlack
+            el[ Background.color ( rgb255 128 128 128 )
+            , Font.color ( rgb255 0 0 0 )
             , Font.size ( footerFontSize mainScreenWidth )
             , paddingEach footerPadding
             , width fill

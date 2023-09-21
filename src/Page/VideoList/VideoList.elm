@@ -29,8 +29,8 @@ videoListElement mainScreenWidth mainScreenHeight=
                         ]
                         , row[ width <| px ( videoWindowWidth mainScreenWidth )
                               , height  <| px ( videoWindowHeight mainScreenHeight )
-                              , Background.color ( CP.rgbGray )
-                              , Font.color ( CP.rgbBlack )
+                              , Background.color ( rgb255 128 128 128 )
+                              , Font.color ( rgb255 0 0 0 )
                               , Font.size ( videoTitleFontSize mainScreenWidth )
                               , centerX
                               , centerY

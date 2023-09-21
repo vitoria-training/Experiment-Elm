@@ -151,8 +151,8 @@ headerButoon model paddingXYValue label onPress=
       , spacing ( round model.height // 60 )
       , width <| px ( round model.width // 12 )
       , height fill
-      , Background.color ( CP.rgbLightgray )
-      , Font.color ( CP.rgbBlack )
+      , Background.color ( rgb255 211 211 211 )
+      , Font.color ( rgb255 0 0 0 )
       , Font.size ( butoonFontSize model.width )
       , centerX
       , centerY
@@ -174,8 +174,8 @@ headerElement model =
                       , spacing ( round model.height // 60 )
                       , width <| px ( round model.width // 6 )
                       , height fill
-                      , Background.color ( CP.rgbLightgray )
-                      , Font.color ( CP.rgbBlack )
+                      , Background.color ( rgb255 211 211 211 )
+                      , Font.color ( rgb255 0 0 0 )
                       , Font.size ( butoonFontSize model.width )
                       , centerX
                       , centerY
@@ -192,8 +192,8 @@ headerElement model =
                       , spacing ( round model.height // 60 )
                       , width <| px ( round model.width // 6 )
                       , height fill
-                      , Background.color ( CP.rgbLightgray )
-                      , Font.color ( CP.rgbBlack )
+                      , Background.color ( rgb255 211 211 211 )
+                      , Font.color ( rgb255 0 0 0 )
                       , Font.size ( butoonFontSize model.width )
                       , centerX
                       , centerY
@@ -214,8 +214,8 @@ headerElement model =
                     Input.button[ paddingXY ( round model.width // 40 ) ( round model.height // 70 )
                       , spacing ( round model.height // 60 )
                       , width <| px ( round model.width // 7 )
-                      , Background.color ( CP.rgbLightgray )
-                      , Font.color ( CP.rgbBlack )
+                      , Background.color ( rgb255 211 211 211 )
+                      , Font.color ( rgb255 0 0 0 )
                       , Font.size ( butoonFontSize model.width )
                       , centerX
                       , centerY

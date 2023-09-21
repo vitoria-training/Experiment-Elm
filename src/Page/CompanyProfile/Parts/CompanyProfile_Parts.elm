@@ -3,7 +3,6 @@ module Page.CompanyProfile.Parts.CompanyProfile_Parts exposing (..)
 import Element exposing (..)
 import Element.Border as Border
 import Element.Font as Font
-import Page.CommonParts as CP
 
 -- Fixed value
 companyProfileBorder : { bottom : number, left : number, right : number, top : number }
@@ -19,7 +18,7 @@ companyProfileItem mainScreenWidth title displayContent=
     row [ width fill
         , Font.size ( round mainScreenWidth // 60 )
         , Border.widthEach companyProfileBorder
-        , Border.color ( CP.rgbGray )
+        , Border.color (rgb255 128 128 128 )
     , padding 10 ][
         column [ width <| px ( round mainScreenWidth // 3 )
             , Font.semiBold ] [
@@ -36,7 +35,7 @@ companyProfileMap mainScreenWidth mainScreenHeight path description displayConte
     row [ width fill
         , Font.size ( round mainScreenWidth // 60 )
         , Border.widthEach companyProfileBorder
-        , Border.color ( CP.rgbGray )
+        , Border.color ( rgb255 128 128 128 )
         , padding 10][
             column [ width <| px ( round mainScreenWidth // 3 )
                 , height fill ] [ 

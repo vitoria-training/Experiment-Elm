@@ -1,4 +1,4 @@
-module Page.VideoList.VideoList exposing (..)
+module Page.MovieList.MovieList exposing (..)
 
 import Element exposing (..)
 import Element.Background as Background

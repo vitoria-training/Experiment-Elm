@@ -1,4 +1,4 @@
-module Page.CompanyProfile.Parts.CompanyProfile_Parts exposing (..)
+module Page.About.Parts.About_Parts exposing (..)
 
 import Element exposing (..)
 import Element.Border as Border

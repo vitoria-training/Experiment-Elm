@@ -1,9 +1,9 @@
-module Page.CompanyProfile.CompanyProfile exposing (..)
+module Page.About.About exposing (..)
 
 import Element exposing (..)
 import Element.Region as Region
 import Element.Font as Font
-import Page.CompanyProfile.Parts.CompanyProfile_Parts as CPP
+import Page.About.Parts.About_Parts as AP
 import Page.CommonParts as CP
 
 companyElement : Float -> Float -> Element msg
@@ -46,19 +46,19 @@ companyElement mainScreenWidth mainScreenHeight=
                         text <| String.toUpper "ABOUT"
                     ]
                 ]
-                , CPP.companyProfileItem mainScreenWidth "会社名" "株式会社XXXX"
-                , CPP.companyProfileItem mainScreenWidth "設立" "YYYY年MM月DD日"
-                , CPP.companyProfileItem mainScreenWidth "資本金" "X,XXX万円"
-                , CPP.companyProfileItem mainScreenWidth "事業内容" 
+                , AP.companyProfileItem mainScreenWidth "会社名" "株式会社XXXX"
+                , AP.companyProfileItem mainScreenWidth "設立" "YYYY年MM月DD日"
+                , AP.companyProfileItem mainScreenWidth "資本金" "X,XXX万円"
+                , AP.companyProfileItem mainScreenWidth "事業内容" 
                     """PlayStation・Nintendo Switch向けコンシューマゲーム、
                     \nソーシャルゲームの企画・開発
                     \n・VR、AR、3Dコンテンツの開発
                     \n・システムエンジニアリングサービス事業
                     \n・ドローンメディア運営事業
                     \n・IT関連事業の統合的ソリューションの展開"""
-                , CPP.companyProfileItem mainScreenWidth "所在地" 
+                , AP.companyProfileItem mainScreenWidth "所在地" 
                     """〒100-0005 東京都千代田区丸の内１丁目"""
-                , CPP.companyProfileMap mainScreenWidth mainScreenHeight "Picture/TokyoStation.png" "TokyoStation"
+                , AP.companyProfileMap mainScreenWidth mainScreenHeight "Picture/TokyoStation.png" "TokyoStation"
                     """東京メトロXX線「東京駅」XX出口から徒歩X分
                     \nJRYY線「YY堀駅」YY出口から徒歩Y分
                     \n都営ZZ線「ZZ駅」ZZ出口から徒歩Z分"""

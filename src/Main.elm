@@ -10,9 +10,9 @@ import Browser
 import Browser.Dom exposing (Viewport)
 import Browser.Events as E
 import Page.Contents.PullDownList as PullDownList
-import Page.VideoList.VideoList as VideoList
+import Page.MovieList.MovieList as VideoList
 import Page.Contact.ContactForm as ContactForm
-import Page.CompanyProfile.CompanyProfile as CompanyProfile
+import Page.About.About as CompanyProfile
 import Page.Footer as Footer
 import Page.CommonParts as CP
 

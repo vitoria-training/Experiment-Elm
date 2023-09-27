@@ -23,6 +23,9 @@ such as
 elm install elm/http
 elm install elm/json
 ```
+### known issues
+if `.js` extension has set as executable on your environment and prompt any `elm` command on where you see `elm.js` the terminal keep asking you to open `elm.js` file.
+in order to avoid this issue, either remove `.js` extension from the list of excutable of your environment or rename `elm.js` to something else. In this repository `elm.js` has renamed as `main.js`
 
 ## git flow
 

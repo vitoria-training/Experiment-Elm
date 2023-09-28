@@ -1,4 +1,4 @@
-module Page.Top.Top exposing (..)
+module Page.Contact.Contact exposing (..)
 
 import Task
 import Html exposing (..)
@@ -11,7 +11,6 @@ import Element.Background as Background
 import Browser
 import Browser.Dom exposing (Viewport)
 import Browser.Events as E
-import Page.About.Parts.About_Parts as AP
 
 main : Program () Model Msg
 main =
@@ -26,7 +25,7 @@ main =
     in
     Browser.element
         { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
-        , view = aboutElement
+        , view = contactElement
         , update = update
         , subscriptions = subscriptions
         }
@@ -38,22 +37,46 @@ subscriptions _ =
 -- MODEL
 type alias Model =
     { width : Float
-    , height : Float }
+    , height : Float
+    , name : String
+    , address : String
+    , title : String
+    , message : String }
 
 initialModel : Model
 initialModel =
     { width = 0
-    , height = 0 }
+    , height = 0
+    , name = ""
+    , address = ""
+    , title = ""
+    , message = "" }
 
 type Msg
     = NoOp
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
+    | InputName String
+    | InputAddress String
+    | InputTitle String
+    | InputMessage String
 
 -- UPDATE
 setCurrentDimensions : { a | width : b, height : c } -> ( b, c ) -> { a | width : b, height : c }
 setCurrentDimensions model ( w, h ) =
     { model | width = w, height = h }
+setName : { a | name : b } -> b -> { a | name : b }
+setName model ( s ) =
+    { model | name = s }
+setAddress : { a | address : b } -> b -> { a | address : b }
+setAddress model ( s ) =
+    { model | address = s }
+setTitle : { a | title : b } -> b -> { a | title : b }
+setTitle model ( s ) =
+    { model | title = s }
+setMessage : { a | message : b } -> b -> { a | message : b }
+setMessage model ( s ) =
+    { model | message = s }
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -66,6 +89,18 @@ update msg model =
 
         NoOp ->
             ( model, Cmd.none )
+
+        InputName s ->
+            ( setName model ( s ), Cmd.none )
+        
+        InputAddress s ->
+            ( setAddress model ( s ), Cmd.none )
+        
+        InputTitle s ->
+            ( setTitle model ( s ), Cmd.none )
+        
+        InputMessage s ->
+            ( setMessage model ( s ), Cmd.none )
 
 -- HeaderButoon template
 butoonFontSize : Float -> Int
@@ -126,8 +161,13 @@ footerPadding =
     , right = 10
     , bottom = 30 }
 
-aboutElement : Model -> Html msg
-aboutElement model=
+-- Contact value
+contactFormWidth : Float -> Int
+contactFormWidth mainScreenWidth=
+    round mainScreenWidth // 12
+
+contactElement : { a | width : Float, height : Float, name : String, address : String, title : String, message : String } -> Html Msg
+contactElement model=
         let
             contentsList =
                 column [ Element.width <| px ( round model.width // 6 ) ] [
@@ -172,28 +212,61 @@ aboutElement model=
                         , column [ Element.width <| px ( round model.width // 100 ) ] [ ]
                     ]
                 ]
-                -- Top
+                -- Contact
                 , column [ Element.width fill
-                    , Element.height <| px 
-                    (round model.height 
-                    - round model.height // 15 
-                    - round model.height // 13) ] [
-                    row [ Element.width fill ][
+                    , Element.height fill ][
+                    row [ centerX
+                        , centerY
+                        , paddingXY 10 10
+                        , Font.size (round model.width // 50)][
                         column [ Element.width fill
-                            , Element.height  <| px ( round model.height - round model.height // 7 ) ] [
-                            Input.button[ paddingXY ( round model.width // 40 ) ( round model.height // 70 )
-                                , spacing ( round model.height // 60 )
-                                , Element.width <| px ( round model.width // 7 )
-                                , Background.color ( rgb255 211 211 211 )
-                                , Font.color ( rgb255 0 0 0 )
-                                , Font.size ( butoonFontSize model.width )
-                                , centerX
-                                , centerY
-                            ]
-                            { label = Element.text <| "Play Contents!"
-                            , onPress = Nothing
-                            }
+                            , Element.height fill
+                            , Region.heading 1
+                            , Font.semiBold ] [
+                            Element.text <| String.toUpper "CONTACT"
                         ]
+                    ]
+                    , row [ centerX
+                        , centerY
+                        , paddingXY 10 10 ][
+                        Input.text [ Element.width <| px (round model.width // 2)  ]{ 
+                            onChange = InputName
+                            , text = model.name
+                            , placeholder = Nothing
+                            , label = Input.labelAbove [] <| Element.text "氏名"
+                        }
+                    ]
+                    , row [ centerX
+                        , centerY
+                        , paddingXY 10 10 ][
+                        Input.text [ Element.width <| px (round model.width // 2) ]{
+                            onChange = InputAddress
+                            , text = model.address
+                            , placeholder = Nothing
+                            , label = Input.labelAbove [] <| Element.text "メールアドレス"
+                        }
+                    ]
+                    , row [ centerX
+                        , centerY
+                        , paddingXY 10 10 ][
+                        Input.text [ Element.width <| px (round model.width // 2)  ]{
+                            onChange = InputTitle
+                            , text = model.title
+                            , placeholder = Nothing
+                            , label = Input.labelAbove [] <| Element.text "題名"
+                        }
+                    ]
+                    , row [ centerX
+                        , centerY
+                        , paddingXY 10 10 ][
+                        Input.multiline [ Element.width <| px (round model.width // 2) 
+                            , Element.height <| px (round model.height // 4)  ]{ 
+                            onChange = InputMessage
+                            , text = model.message
+                            , placeholder = Nothing
+                            , label = Input.labelAbove [] <| Element.text "メッセージ本文 (任意)"
+                            , spellcheck = False
+                        }
                     ]
                 ]
                 -- Footer

@@ -1,4 +1,4 @@
-module Page.Contact.Parts.ContactForm_Parts exposing (..)
+module Page.Contact.Parts.Contact_Parts exposing (..)
 
 import Element exposing (..)
 import Element.Region as Region

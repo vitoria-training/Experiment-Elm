@@ -1,17 +1,70 @@
 module Page.About.About exposing (..)
 
+import Page.Color as Color255
 import Task
-import Html exposing (..)
-import Html.Attributes exposing (..)
 import Element exposing (..)
-import Element.Input as Input
-import Element.Region as Region
-import Element.Font as Font
-import Element.Background as Background
+import Element.Attributes exposing (..)
+import Style exposing (..)
+import Style.Border as Border
+import Style.Color as Color
+import Style.Font as Font
 import Browser
 import Browser.Dom exposing (Viewport)
 import Browser.Events as E
-import Page.About.Parts.About_Parts as AP
+
+type Styles
+    = None
+    | Header
+    | Footer
+    | Title
+    | Main
+    | Logo
+    | Button
+    | TextBox
+
+type Variation
+    = Disabled
+
+stylesheet : { a | width : Float } -> StyleSheet Styles variation
+stylesheet model =
+    Style.styleSheet
+        [ style None [] -- It's handy to have a blank style
+        , style Header
+            [ Color.background Color255.darkGray ]
+        , style Footer
+            [ Color.background Color255.darkGray
+            , Font.size (model.width / 100)
+            ]
+        , style Title
+            [ Font.bold
+            , Font.size (model.width / 40)
+            ]
+        , style Main
+            [ Border.all 1 -- set all border widths to 1 px.
+            , Color.text Color255.darkCharcoal
+            , Color.background Color255.white
+            , Color.border Color255.grey
+            , Font.size (model.width / 80)
+            , Font.lineHeight 1.3 -- line height, given as a ratio of current font size.
+            ]
+        , style Logo
+            [ Font.size (model.width / 40)
+            ]
+        , style Button
+            [ Color.text Color255.black
+            , Color.background Color255.white
+            , Color.border Color255.black
+            , hover
+                [ Color.background Color255.gray
+                ]
+            , Font.size (model.width / 40)
+            , Border.all 2
+            ]
+        , style TextBox
+            [ Border.top 3
+                , Font.lineHeight 2
+            ]
+        ]
 
 main : Program () Model Msg
 main =
@@ -67,186 +120,124 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
--- HeaderButoon template
-butoonFontSize : Float -> Int
-butoonFontSize width=
-  round width // 70
-
-topPaddingXY : { x : number, y : number }
-topPaddingXY =
-  { x = 35
-  , y = 70}
-
-aboutPaddingXY : { x : number, y : number }
-aboutPaddingXY =
-  { x = 50
-  , y = 70}
-
-contentsPaddingXY : { x : number, y : number }
-contentsPaddingXY =
-  { x = 20
-  , y = 70}
-
-contactPaddingXY : { x : number, y : number }
-contactPaddingXY =
-  { x = 60
-  , y = 70}
-
-headerButoon : { a | width : Float, height : Float } -> { b | x : Int, y : Int } -> String -> Element d
-headerButoon model paddingXYValue label=
-  column [ Element.width <| px ( round model.width // 10 )] [
-    Input.button[ paddingXY ( round model.width // paddingXYValue.x ) ( round model.height // paddingXYValue.y )
-      , spacing ( round model.height // 60 )
-      , Element.width <| px ( round model.width // 12 )
-      , Element.height fill
-      , Background.color ( rgb255 211 211 211 )
-      , Font.color ( rgb255 0 0 0 )
-      , Font.size ( butoonFontSize model.width )
-      , centerX
-      , centerY
-    ]
-    { label = Element.text <| label
-      , onPress = Nothing
-    }
-  ]
-
--- Footer Fixed value
-footerFontSize : Float -> Int
-footerFontSize mainScreenWidth =
-    round mainScreenWidth // 70
-
-footerHeight : Float -> Int
-footerHeight mainScreenHeight =
-    round mainScreenHeight // 13
-
-footerPadding : { top : number, left : number, right : number, bottom : number }
-footerPadding =
-    { top = 0
-    , left = 10
-    , right = 10
-    , bottom = 30 }
-
-aboutElement : Model -> Html msg
 aboutElement model=
-        let
-            contentsList =
-                column [ Element.width <| px ( round model.width // 6 ) ] [
-                    Input.button[ paddingXY ( round model.width // contentsPaddingXY.x ) ( round model.height // contentsPaddingXY.y )
-                      , spacing ( round model.height // 60 )
-                      , Element.width <| px ( round model.width // 6 )
-                      , Element.width fill
-                      , Background.color ( rgb255 211 211 211 )
-                      , Font.color ( rgb255 0 0 0 )
-                      , Font.size ( butoonFontSize model.width )
-                      , centerX
-                      , centerY
-                      ]
-                    { label = Element.text <| "Contents"
-                    , onPress = Nothing
-                    }
-                ]
-        in
-        layout [ Element.width fill
-            , Element.height fill ] <|
-            column[ Element.width fill
-                , Element.height fill ][
-                -- Header
-                column [ Element.width fill][
-                    row [ Element.width fill
-                        , Element.height <| px ( round model.height // 15 )
-                    ][
-                        column [ Element.width <| px ( round model.width // 30 ) ] [ 
-                        -- Since I want it to be square, I use "height" and "width".
-                            Element.image [ Element.width <| px ( round model.width // 40 )
-                            , Element.height <| px ( round model.width // 40 )
-                            , centerX
-                            , centerY ]
-                            { src = "../../Picture/elm_logo.png"
-                            , description = "elm_logo" }
-                        ]
-                        , column [ Element.width fill] []
-                        , headerButoon model topPaddingXY "Top"
-                        , headerButoon model aboutPaddingXY "About"
-                        , contentsList
-                        , headerButoon model contactPaddingXY "Contact"
-                        , column [ Element.width <| px ( round model.width // 100 ) ] [ ]
+    Element.layout (stylesheet model) <|
+        column None
+            []
+            [ headerLayout model
+            , el None [ height (px (model.height - (model.height / 10)*2 ))
+                , yScrollbar
+                ] <|
+                column Main
+                    [ width fill
+                        , center
+                        , verticalCenter
+                        , paddingXY 0 20 
                     ]
-                ]
-                -- About
-                , column[ Element.width fill
-                    , Element.height fill ][
-                    column[ scrollbarY
-                        , Element.width fill
-                        , Element.height <| px 
-                        (round model.height 
-                        - round model.height // 15 
-                        - round model.height // 13) ][
-                    column[ Element.width <| px ( round model.width // 50 ) ][]
-                    , column [ Element.width <| px ( round model.width - round model.width // 5 )
-                        , centerX
-                        , centerY ][
-                        row [ Element.width fill ][
-                            column [ Element.width fill ] [
-                                Element.image [ Element.width fill
-                                    , Element.height <| px ( round model.height // 2 )
-                                    , centerX
-                                    , centerY ]
-                                { src = "../../Picture/Spacecat.png"
-                                , description = "Spacecat" }
-                            ]
-                        ]
-                        , row [centerX
-                            , centerY
-                            , Font.size ( round model.width // 50 )
-                            , padding 5 ][
-                            column [ Element.width fill
-                                , Element.height fill
-                                , Region.heading 1
-                                , Font.semiBold ] [
-                                Element.text <| String.toUpper "会社概要"
-                            ]
-                        ]
-                        , row [ centerX
-                            , centerY
-                            , Font.size ( round model.width // 60 )][
-                            column [ Element.width fill
-                                , Element.height fill
-                                , Region.heading 2
-                                , Font.semiBold ] [
-                                Element.text <| String.toUpper "ABOUT"
-                            ]
-                        ]
-                        , AP.companyProfileItem model.width "会社名" "株式会社XXXX"
-                        , AP.companyProfileItem model.width "設立" "YYYY年MM月DD日"
-                        , AP.companyProfileItem model.width "資本金" "X,XXX万円"
-                        , AP.companyProfileItem model.width "事業内容" 
-                            """PlayStation・Nintendo Switch向けコンシューマゲーム、
-                            \nソーシャルゲームの企画・開発
-                            \n・VR、AR、3Dコンテンツの開発
-                            \n・システムエンジニアリングサービス事業
-                            \n・ドローンメディア運営事業
-                            \n・IT関連事業の統合的ソリューションの展開"""
-                        , AP.companyProfileItem model.width "所在地" 
-                            """〒100-0005 東京都千代田区丸の内１丁目"""
-                        , AP.companyProfileMap model.width model.height "../../Picture/TokyoStation.png" "TokyoStation"
-                            """東京メトロXX線「東京駅」XX出口から徒歩X分
-                            \nJRYY線「YY堀駅」YY出口から徒歩Y分
-                            \n都営ZZ線「ZZ駅」ZZ出口から徒歩Z分"""
-                        ]
-                    ]
-                ]
-                -- Footer
-                , column [Element.width fill][
-                    row [Element.width fill][
-                        el[ Background.color ( rgb255 128 128 128 )
-                        , Font.color ( rgb255 0 0 0 )
-                        , Font.size ( footerFontSize model.width )
-                        , paddingEach footerPadding
-                        , Element.width fill
-                        , Element.height <| px ( footerHeight model.height )
-                        ]
-                        ( Element.text 
-                        """© 2023 React Inc. All Rights Reserved.\nI'm happy! thank you!""")
-                    ]
+                    (List.concat
+                        [ aboutLayout model]
+                    )
+            , footerwLayout model
+            ]
+
+
+headerLayout model =
+    row Header
+        [ spread
+            , paddingXY 30 20 
+            , height (px (model.height / 10) )
+            , width (px (model.width) )
+        ]
+        [ el Logo [verticalCenter]
+            (image None[width (px (model.width / 25) )
+            , height (px (model.width / 25) )]
+                { src = "../../Picture/VITORIA_logo.jpg"
+                , caption = "VITORIA_logo"
+                }
+            )
+        , row None
+            [ spacing 5
+                , verticalCenter ]
+            [ button Button [paddingXY 20 0] (Element.text "Top")
+                , button Button [paddingXY 20 0] (Element.text "About")
+                , button Button [paddingXY 20 0] (Element.text "Contents")
+                , button Button [paddingXY 20 0] (Element.text "Contact")
+            ] 
+        ]
+aboutLayout model=
+    [ image None[width (px (model.width / 1.5) )
+        , height (px (model.height / 2.5) )]
+        { src = "../../Picture/Spacecat.png"
+            , caption = "Spacecat"
+        }
+        , textLayout None
+        [ spacingXY 25 25
+        ]
+        [ h1 Title [](Element.text "会社概要")
+            , h3 Title [](Element.text "ABOUT")
+        ]
+        , textLayout None
+        [ paddingXY 10 10
+        ]
+        [ row TextBox []
+            [ column None [ verticalCenter
+                , width (px (model.width / 3) ) ] [Element.text "会社名"]
+            , column None [ verticalCenter 
+                , width (px (model.width / 3) )] [Element.text "株式会社XXXX"]
+            ]
+            , row TextBox []
+            [ column None [ verticalCenter
+                , width (px (model.width / 3) ) ] [Element.text "設立"]
+            , column None [ verticalCenter 
+                , width (px (model.width / 3) )] [Element.text "YYYY年MM月DD日"]
+            ]
+            , row TextBox []
+            [ column None [ verticalCenter
+                , width (px (model.width / 3) ) ] [Element.text "資本金"]
+            , column None [ verticalCenter 
+                , width (px (model.width / 3) )] [Element.text "X,XXX万円"]
+            ]
+            , row TextBox [paddingBottom 10]
+            [ column None [ verticalCenter
+                , width (px (model.width / 3) ) ] [Element.text "事業内容"]
+            , column None [ verticalCenter 
+                , width (px (model.width / 3) )] [Element.text 
+                 """PlayStation・Nintendo Switch向けコンシューマゲーム、
+                    \nソーシャルゲームの企画・開発
+                    \n・VR、AR、3Dコンテンツの開発
+                    \n・システムエンジニアリングサービス事業
+                    \n・ドローンメディア運営事業
+                    \n・IT関連事業の統合的ソリューションの展開"""
                 ]
             ]
+            , row TextBox [ paddingBottom 10 ]
+            [ column None [ verticalCenter
+                , width (px (model.width / 3) ) ] [
+                    row None [][Element.text "所在地"]
+                    , row None [][ image None[width (px (model.width / 3.5) )]
+                        { src = "../../Picture/TokyoStation.png"
+                            , caption = "TokyoStation"
+                        }
+                    ]
+                ]
+            , column None [ verticalCenter 
+                , width (px (model.width / 3) )] [Element.text 
+                    """〒100-0005 東京都千代田区丸の内１丁目
+                    \n東京メトロXX線「東京駅」XX出口から徒歩X分
+                    \nJRYY線「YY堀駅」YY出口から徒歩Y分
+                    \n都営ZZ線「ZZ駅」ZZ出口から徒歩Z分"""
+                ]
+            ]
+        ]
+    ]
+
+footerwLayout model =
+    row Footer
+        [ paddingLeft  (model.width / 50)
+            , height (px (model.height / 10) )
+            , width (px (model.width) )
+        ]
+        [ paragraph None [] [
+            Element.text "© 2023 React Inc. All Rights Reserved.I'm happy! thank you!"
+            ]
+        ]

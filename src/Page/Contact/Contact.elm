@@ -1,16 +1,70 @@
 module Page.Contact.Contact exposing (..)
 
+import Page.Color as Color255
 import Task
-import Html exposing (..)
-import Html.Attributes exposing (..)
 import Element exposing (..)
-import Element.Input as Input
-import Element.Region as Region
-import Element.Font as Font
-import Element.Background as Background
+import Element.Input as Input exposing (..)
+import Element.Attributes exposing (..)
+import Style exposing (..)
+import Style.Border as Border
+import Style.Color as Color
+import Style.Font as Font
 import Browser
 import Browser.Dom exposing (Viewport)
 import Browser.Events as E
+
+type Styles
+    = None
+    | Header
+    | Footer
+    | Title
+    | Main
+    | Logo
+    | Button
+    | TextBox
+
+type Variation
+    = Disabled
+
+stylesheet : { a | width : Float } -> StyleSheet Styles variation
+stylesheet model =
+    Style.styleSheet
+        [ style None [] -- It's handy to have a blank style
+        , style Header
+            [ Color.background Color255.darkGray ]
+        , style Footer
+            [ Color.background Color255.darkGray
+            , Font.size (model.width / 100)
+            ]
+        , style Title
+            [ Font.bold
+            , Font.size (model.width / 40)
+            ]
+        , style Main
+            [ Border.all 1 -- set all border widths to 1 px.
+            , Color.text Color255.darkCharcoal
+            , Color.background Color255.white
+            , Color.border Color255.grey
+            , Font.size (model.width / 80)
+            , Font.lineHeight 1.3 -- line height, given as a ratio of current font size.
+            ]
+        , style Logo
+            [ Font.size (model.width / 40)
+            ]
+        , style Button
+            [ Color.text Color255.black
+            , Color.background Color255.white
+            , Color.border Color255.black
+            , hover
+                [ Color.background Color255.gray
+                ]
+            , Font.size (model.width / 40)
+            , Border.all 2
+            ]
+        , style TextBox
+            [ Border.all 1
+            ]
+        ]
 
 main : Program () Model Msg
 main =
@@ -89,7 +143,7 @@ update msg model =
 
         NoOp ->
             ( model, Cmd.none )
-
+        
         InputName s ->
             ( setName model ( s ), Cmd.none )
         
@@ -102,185 +156,136 @@ update msg model =
         InputMessage s ->
             ( setMessage model ( s ), Cmd.none )
 
--- HeaderButoon template
-butoonFontSize : Float -> Int
-butoonFontSize width=
-  round width // 70
-
-topPaddingXY : { x : number, y : number }
-topPaddingXY =
-  { x = 35
-  , y = 70}
-
-aboutPaddingXY : { x : number, y : number }
-aboutPaddingXY =
-  { x = 50
-  , y = 70}
-
-contentsPaddingXY : { x : number, y : number }
-contentsPaddingXY =
-  { x = 20
-  , y = 70}
-
-contactPaddingXY : { x : number, y : number }
-contactPaddingXY =
-  { x = 60
-  , y = 70}
-
-headerButoon : { a | width : Float, height : Float } -> { b | x : Int, y : Int } -> String -> Element d
-headerButoon model paddingXYValue label=
-  column [ Element.width <| px ( round model.width // 10 )] [
-    Input.button[ paddingXY ( round model.width // paddingXYValue.x ) ( round model.height // paddingXYValue.y )
-      , spacing ( round model.height // 60 )
-      , Element.width <| px ( round model.width // 12 )
-      , Element.height fill
-      , Background.color ( rgb255 211 211 211 )
-      , Font.color ( rgb255 0 0 0 )
-      , Font.size ( butoonFontSize model.width )
-      , centerX
-      , centerY
-    ]
-    { label = Element.text <| label
-      , onPress = Nothing
-    }
-  ]
-
--- Footer Fixed value
-footerFontSize : Float -> Int
-footerFontSize mainScreenWidth =
-    round mainScreenWidth // 70
-
-footerHeight : Float -> Int
-footerHeight mainScreenHeight =
-    round mainScreenHeight // 13
-
-footerPadding : { top : number, left : number, right : number, bottom : number }
-footerPadding =
-    { top = 0
-    , left = 10
-    , right = 10
-    , bottom = 30 }
-
--- Contact value
-contactFormWidth : Float -> Int
-contactFormWidth mainScreenWidth=
-    round mainScreenWidth // 12
-
-contactElement : { a | width : Float, height : Float, name : String, address : String, title : String, message : String } -> Html Msg
 contactElement model=
-        let
-            contentsList =
-                column [ Element.width <| px ( round model.width // 6 ) ] [
-                    Input.button[ paddingXY ( round model.width // contentsPaddingXY.x ) ( round model.height // contentsPaddingXY.y )
-                      , spacing ( round model.height // 60 )
-                      , Element.width <| px ( round model.width // 6 )
-                      , Element.width fill
-                      , Background.color ( rgb255 211 211 211 )
-                      , Font.color ( rgb255 0 0 0 )
-                      , Font.size ( butoonFontSize model.width )
-                      , centerX
-                      , centerY
-                      ]
-                    { label = Element.text <| "Contents"
-                    , onPress = Nothing
-                    }
-                ]
-        in
-        layout [ Element.width fill
-            , Element.height fill ] <|
-            column[ Element.width fill
-                , Element.height fill ][
-                -- Header
-                column [ Element.width fill][
-                    row [ Element.width fill
-                        , Element.height <| px ( round model.height // 15 )
-                    ][
-                        column [ Element.width <| px ( round model.width // 30 ) ] [ 
-                        -- Since I want it to be square, I use "height" and "width".
-                            Element.image [ Element.width <| px ( round model.width // 40 )
-                            , Element.height <| px ( round model.width // 40 )
-                            , centerX
-                            , centerY ]
-                            { src = "../../Picture/elm_logo.png"
-                            , description = "elm_logo" }
-                        ]
-                        , column [ Element.width fill] []
-                        , headerButoon model topPaddingXY "Top"
-                        , headerButoon model aboutPaddingXY "About"
-                        , contentsList
-                        , headerButoon model contactPaddingXY "Contact"
-                        , column [ Element.width <| px ( round model.width // 100 ) ] [ ]
+    Element.layout (stylesheet model)  <|
+        column None
+            []
+            [ headerLayout model
+            , el None [ height (px (model.height - (model.height / 10)*2 ))
+                , yScrollbar
+                ] <|
+                column Main
+                    [ width fill
+                        , center
+                        , verticalCenter
+                        , yScrollbar
+                        , paddingTop (model.height / 10)
                     ]
-                ]
-                -- Contact
-                , column [ Element.width fill
-                    , Element.height fill ][
-                    row [ centerX
-                        , centerY
-                        , paddingXY 10 10
-                        , Font.size (round model.width // 50)][
-                        column [ Element.width fill
-                            , Element.height fill
-                            , Region.heading 1
-                            , Font.semiBold ] [
-                            Element.text <| String.toUpper "CONTACT"
-                        ]
-                    ]
-                    , row [ centerX
-                        , centerY
-                        , paddingXY 10 10 ][
-                        Input.text [ Element.width <| px (round model.width // 2)  ]{ 
-                            onChange = InputName
-                            , text = model.name
-                            , placeholder = Nothing
-                            , label = Input.labelAbove [] <| Element.text "氏名"
-                        }
-                    ]
-                    , row [ centerX
-                        , centerY
-                        , paddingXY 10 10 ][
-                        Input.text [ Element.width <| px (round model.width // 2) ]{
-                            onChange = InputAddress
-                            , text = model.address
-                            , placeholder = Nothing
-                            , label = Input.labelAbove [] <| Element.text "メールアドレス"
-                        }
-                    ]
-                    , row [ centerX
-                        , centerY
-                        , paddingXY 10 10 ][
-                        Input.text [ Element.width <| px (round model.width // 2)  ]{
-                            onChange = InputTitle
-                            , text = model.title
-                            , placeholder = Nothing
-                            , label = Input.labelAbove [] <| Element.text "題名"
-                        }
-                    ]
-                    , row [ centerX
-                        , centerY
-                        , paddingXY 10 10 ][
-                        Input.multiline [ Element.width <| px (round model.width // 2) 
-                            , Element.height <| px (round model.height // 4)  ]{ 
-                            onChange = InputMessage
-                            , text = model.message
-                            , placeholder = Nothing
-                            , label = Input.labelAbove [] <| Element.text "メッセージ本文 (任意)"
-                            , spellcheck = False
-                        }
-                    ]
-                ]
-                -- Footer
-                , column [Element.width fill][
-                    row [Element.width fill][
-                        el[ Background.color ( rgb255 128 128 128 )
-                        , Font.color ( rgb255 0 0 0 )
-                        , Font.size ( footerFontSize model.width )
-                        , paddingEach footerPadding
-                        , Element.width fill
-                        , Element.height <| px ( footerHeight model.height )
-                        ]
-                        ( Element.text 
-                        """© 2023 React Inc. All Rights Reserved.\nI'm happy! thank you!""")
-                    ]
-                ]
+                    (List.concat
+                        [ viewLayout model]
+                    )
+            , footerwLayout model
             ]
+
+
+headerLayout model =
+    row Header
+        [ spread
+            , paddingXY 30 20 
+            , height (px (model.height / 10) )
+            , width (px (model.width) )
+        ]
+        [ el Logo [verticalCenter]
+            (image None[width (px (model.width / 25) )
+            , height (px (model.width / 25) )]
+                { src = "../../Picture/VITORIA_logo.jpg"
+                , caption = "VITORIA_logo"
+                }
+            )
+        , row None
+            [ spacing 5
+                , verticalCenter ]
+            [ button Button [paddingXY 20 0] (Element.text "Top")
+                , button Button [paddingXY 20 0] (Element.text "About")
+                , button Button [paddingXY 20 0] (Element.text "Contents")
+                , button Button [paddingXY 20 0] (Element.text "Contact")
+            ] 
+        ]
+viewLayout model=
+    [ textLayout None
+        [ spacingXY 25 25
+        ]
+        [ h1 Title [ padding 10 ](Element.text "CONTACT")
+        ]
+        , textLayout None
+        [ paddingTop 10
+        ]
+        [ Input.text TextBox [ padding 10
+            , width ( px (model.width / 3) )]
+            { onChange = InputName
+            , value = model.name
+            , label =
+                Input.placeholder
+                    { label = Input.labelAbove (el None [ verticalCenter ] (Element.text "氏名"))
+                    , text = ""
+                    }
+            , options =[]
+            }
+        ]
+        , textLayout None
+        [ spacingXY 25 25
+            , paddingTop 10
+        ]
+        [ Input.email TextBox [ padding 10
+            , width ( px (model.width / 3) )]
+            { onChange = InputAddress
+            , value = model.address
+            , label =
+                Input.placeholder
+                    { label = Input.labelAbove (el None [ verticalCenter ] (Element.text "メールアドレス"))
+                    , text = ""
+                    }
+            , options =[]
+            }
+        ]
+        , textLayout None
+        [ spacingXY 25 25
+            , paddingTop 10
+        ]
+        [ Input.text TextBox [ padding 10
+            , width ( px (model.width / 3) )]
+            { onChange = InputTitle
+                , value = model.title
+                , label =
+                    Input.placeholder
+                        { label = Input.labelAbove (el None [ verticalCenter ] (Element.text "題名"))
+                            , text = ""
+                        }
+                , options =[]
+            }
+        ]
+        , textLayout None
+        [ spacingXY 25 25
+            , paddingTop 10
+        ]
+        [ Input.multiline TextBox [ padding 10
+            , width ( px (model.width / 3) )
+            , height ( px (model.height / 5) )]
+            { onChange = InputMessage
+            , value = model.message
+            , label =
+                Input.placeholder
+                    { label = Input.labelAbove (el None [ verticalCenter ] (Element.text "メッセージ本文 (任意)"))
+                    , text = ""
+                    }
+            , options =[]
+            }
+        ]
+        , textLayout None [ spacingXY 25 25
+            , paddingTop 10
+            , paddingBottom 10
+        ]
+        [ button Button [paddingXY 20 0] (Element.text "送信")
+        ]
+    ]
+
+footerwLayout model =
+    row Footer
+        [ paddingLeft  (model.width / 50)
+            , height (px (model.height / 10) )
+            , width (px (model.width) )
+        ]
+        [ paragraph None [] [
+            Element.text "© 2023 React Inc. All Rights Reserved.I'm happy! thank you!"
+            ]
+        ]

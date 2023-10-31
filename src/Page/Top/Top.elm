@@ -24,7 +24,7 @@ type Styles
 type Variation
     = Disabled
 
-stylesheet : { a | width : Float } -> StyleSheet Styles variation
+stylesheet : Model -> StyleSheet Styles variation
 stylesheet model =
     Style.styleSheet
         [ style None [] -- It's handy to have a blank style
@@ -63,14 +63,14 @@ main =
         handleResult v =
             case v of
                 Err _ ->
-                    NoOp
+                    Nothing
 
                 Ok vp ->
                     GotInitialViewport vp
     in
     Browser.element
         { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
-        , view = topElement
+        , view = topPageElement
         , update = update
         , subscriptions = subscriptions
         }
@@ -90,7 +90,7 @@ initialModel =
     , height = 0 }
 
 type Msg
-    = NoOp
+    = Nothing
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
 
@@ -108,11 +108,11 @@ update msg model =
         Resize ( w, h ) ->
             ( setCurrentDimensions model ( w, h ), Cmd.none )
 
-        NoOp ->
+        Nothing ->
             ( model, Cmd.none )
 
-topElement : Model -> Html msg
-topElement model=
+topPageElement : Model -> Html msg
+topPageElement model=
     Element.layout ( stylesheet model ) <|
         column None
             [][
@@ -128,9 +128,9 @@ topElement model=
                         , verticalCenter
                         ]
                         (List.concat
-                            [ topLayout ]
+                            [ topPageLayout ]
                         )
-                , footerwLayout model
+                , footerLayout model
             ]
 
 headerLayout : Model -> Element Styles variation msg
@@ -173,8 +173,8 @@ headerLayout model =
                 ]
         ]
 
-topLayout : List (Element Styles variation msg)
-topLayout =
+topPageLayout : List (Element Styles variation msg)
+topPageLayout =
     [ textLayout None
         [ spacingXY 25 25 ][
             button Button
@@ -184,8 +184,8 @@ topLayout =
         ]
     ]
 
-footerwLayout : Model -> Element Styles variation msg
-footerwLayout model =
+footerLayout : Model -> Element Styles variation msg
+footerLayout model =
     row Footer
         [ paddingLeft  ( model.width / 50 )
         , height ( px ( model.height / 10 ) )

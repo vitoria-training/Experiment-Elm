@@ -31,7 +31,7 @@ type Styles
 type Variation
     = Disabled
 
-stylesheet : { a | width : Float } -> StyleSheet Styles variation
+stylesheet : Model -> StyleSheet Styles variation
 stylesheet model =
     Style.styleSheet
         [ Style.style None
@@ -91,7 +91,7 @@ main =
         handleResult v =
             case v of
                 Err _ ->
-                    NoOp
+                    Nothing
 
                 Ok vp ->
                     GotInitialViewport vp
@@ -228,7 +228,7 @@ type Direction
     | MoveLeft
 
 type Msg
-    = NoOp
+    = Nothing
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
     | Scroll ( Int, Direction)
@@ -247,7 +247,7 @@ update msg model =
         Resize ( w, h ) ->
             ( setCurrentDimensions model ( w, h ), Cmd.none )
 
-        NoOp ->
+        Nothing ->
             ( model, Cmd.none )
 
         Scroll ( targetPlaylistIndex, direction ) ->
@@ -317,7 +317,7 @@ playlistElement model=
                         ( List.concat
                             [ playlistLayout model ]
                         )
-                , footerwLayout model
+                , footerLayout model
             ]
 
 headerLayout : Model -> Element Styles variation msg
@@ -457,7 +457,7 @@ videoSettings modelWidth modeiHeight scrollViewPosition video =
                 ]
             , row VideoRow
                 [][
-                    chabgeToElement( videoframe video.videoUrl modelWidth modeiHeight )
+                    changeToElement( videoframe video.videoUrl modelWidth modeiHeight )
                 ]
             ]
         ]
@@ -480,13 +480,13 @@ videoframeHeight : Float -> Int
 videoframeHeight mainScreenHeight=
     round mainScreenHeight // 2
 
-chabgeToElement : Html msg -> Element style variation msg
-chabgeToElement msg =
+changeToElement : Html msg -> Element style variation msg
+changeToElement msg =
     -- Change from Html to Element
     html msg
 
-footerwLayout : Model -> Element Styles variation msg
-footerwLayout model =
+footerLayout : Model -> Element Styles variation msg
+footerLayout model =
     row Footer
         [ paddingLeft  (model.width / 50)
         , EA.height (px (model.height / 10) )

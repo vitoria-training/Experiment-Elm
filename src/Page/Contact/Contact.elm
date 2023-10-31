@@ -74,14 +74,14 @@ main =
         handleResult v =
             case v of
                 Err _ ->
-                    NoOp
+                    Nothing
 
                 Ok vp ->
                     GotInitialViewport vp
     in
     Browser.element
         { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
-        , view = contactElement
+        , view = contactPageElement
         , update = update
         , subscriptions = subscriptions
         }
@@ -109,7 +109,7 @@ initialModel =
     , message = "" }
 
 type Msg
-    = NoOp
+    = Nothing
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
     | InputName String
@@ -143,7 +143,7 @@ update msg model =
         Resize ( w, h ) ->
             ( setCurrentDimensions model ( w, h ), Cmd.none )
 
-        NoOp ->
+        Nothing ->
             ( model, Cmd.none )
         
         InputName s ->
@@ -158,8 +158,8 @@ update msg model =
         InputMessage s ->
             ( setMessage model ( s ), Cmd.none )
 
-contactElement : Model -> Html Msg
-contactElement model=
+contactPageElement : Model -> Html Msg
+contactPageElement model=
     Element.layout (stylesheet model)  <|
         column None
             [] [
@@ -175,9 +175,9 @@ contactElement model=
                         , yScrollbar
                         , paddingTop ( model.height / 10 )
                         ] (
-                            List.concat [ contactLayout model ]
+                            List.concat [ contactPageLayout model ]
                         )
-                , footerwLayout model
+                , footerLayout model
             ]
 
 headerLayout : Model -> Element Styles variation msg
@@ -220,8 +220,8 @@ headerLayout model =
                 ]
         ]
 
-contactLayout : Model -> List (Element Styles variation Msg)
-contactLayout model=
+contactPageLayout : Model -> List (Element Styles variation Msg)
+contactPageLayout model=
     [ textLayout None
         [ spacingXY 25 25 ][
             h1 Title
@@ -324,8 +324,8 @@ contactLayout model=
         ]
     ]
 
-footerwLayout : Model -> Element Styles variation msg
-footerwLayout model =
+footerLayout : Model -> Element Styles variation msg
+footerLayout model =
     row Footer
         [ paddingLeft  ( model.width / 50 )
         , height ( px ( model.height / 10 ) )

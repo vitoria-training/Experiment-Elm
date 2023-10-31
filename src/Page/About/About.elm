@@ -74,14 +74,14 @@ main =
         handleResult v =
             case v of
                 Err _ ->
-                    NoOp
+                    Nothing
 
                 Ok vp ->
                     GotInitialViewport vp
     in
     Browser.element
         { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
-        , view = aboutElement
+        , view = aboutPageElement
         , update = update
         , subscriptions = subscriptions
         }
@@ -101,7 +101,7 @@ initialModel =
     , height = 0 }
 
 type Msg
-    = NoOp
+    = Nothing
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
 
@@ -119,11 +119,11 @@ update msg model =
         Resize ( w, h ) ->
             ( setCurrentDimensions model ( w, h ), Cmd.none )
 
-        NoOp ->
+        Nothing ->
             ( model, Cmd.none )
 
-aboutElement : Model -> Html msg
-aboutElement model=
+aboutPageElement : Model -> Html msg
+aboutPageElement model=
     Element.layout (stylesheet model) <|
         column None
             [][
@@ -138,9 +138,9 @@ aboutElement model=
                         , verticalCenter
                         , paddingXY 0 20 
                         ](
-                            List.concat [ aboutLayout model ]
+                            List.concat [ aboutPageLayout model ]
                         )
-                , footerwLayout model
+                , footerLayout model
             ]
 
 
@@ -184,8 +184,8 @@ headerLayout model =
                 ]
         ]
 
-aboutLayout : Model -> List (Element Styles variation msg)
-aboutLayout model=
+aboutPageLayout : Model -> List (Element Styles variation msg)
+aboutPageLayout model=
     [ image None
         [ width ( px ( model.width / 1.5 ) )
         , height ( px ( model.height / 2.5 ) )
@@ -294,8 +294,8 @@ aboutLayout model=
         ]
     ]
 
-footerwLayout : Model -> Element Styles variation msg
-footerwLayout model =
+footerLayout : Model -> Element Styles variation msg
+footerLayout model =
     row Footer
         [ paddingLeft  ( model.width / 50 )
         , height ( px ( model.height / 10 ) )

@@ -1,4 +1,4 @@
-module Page.MovieList.MovieList exposing (..)
+module Page.Playlist.Playlist exposing (..)
 
 import Page.Color as Color255
 import Task
@@ -24,9 +24,9 @@ type Styles
     | Logo
     | Button
     | ListTitle
-    | MovieRow
-    | MovieButton
-    | MovieStyle
+    | VideoRow
+    | VideoButton
+    | VideoStyle
 
 type Variation
     = Disabled
@@ -71,15 +71,15 @@ stylesheet model =
             [ Font.size ( model.width / 50 )
             , Font.bold
             ]
-        , Style.style MovieRow
+        , Style.style VideoRow
             [ Font.size ( model.width / 50 )
             ]
-        , Style.style MovieButton
+        , Style.style VideoButton
             [ Color.background Color255.white
             , Font.size ( model.width / 50 )
             , Font.bold
             ]
-        , Style.style MovieStyle
+        , Style.style VideoStyle
             [ Color.background Color255.darkGray
             , Font.size ( model.width / 100 )
             ]
@@ -98,7 +98,7 @@ main =
     in
     Browser.element
         { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
-        , view = movieListElement
+        , view = playlistElement
         , update = update
         , subscriptions = subscriptions
         }
@@ -111,36 +111,36 @@ subscriptions _ =
 type alias Model =
     { width : Float
     , height : Float
-    , movieList : List MovieList
+    , playlists : List Playlist
     }
 
-type alias MovieList =
-    { listSortNo : Int
-    , listTitle : String
-    , startingPosition : Int
-    , movieData : List Movie
+type alias Playlist =
+    { index : Int
+    , title : String
+    , scrollViewPosition : Int
+    , videos : List Video
     }
 
-type alias Movie =
+type alias Video =
     { videoTitle : String
     , videoUrl : String
     }
 
-type StartNo =
+type ScrollViewPosition =
     Int
 
 type alias Cramp =
     { minPos : Int
     , maxPos : Int }
 
--- MovieData
+-- VideoData
 
-list1_Movies : MovieList
-list1_Movies =
-    { listSortNo = 0
-    , listTitle = "git講習"
-    , startingPosition = initStartNo
-    , movieData = [
+list1_Videos : Playlist
+list1_Videos =
+    { index = 0
+    , title = "git講習"
+    , scrollViewPosition = initScrollViewPosition
+    , videos = [
         {videoTitle = "基本コマンド1" 
             , videoUrl = "Js_8xBDhhwE"}
         , {videoTitle = "基本コマンド2"
@@ -154,12 +154,12 @@ list1_Movies =
         ]
     }
 
-list2_Movies : MovieList
-list2_Movies =
-    { listSortNo = 1
-    , listTitle = "プログラミングパラダイム講習"
-    , startingPosition = initStartNo
-    , movieData = [
+list2_Videos : Playlist
+list2_Videos =
+    { index = 1
+    , title = "プログラミングパラダイム講習"
+    , scrollViewPosition = initScrollViewPosition
+    , videos = [
         {videoTitle = "古代ギリシャ-中世編" 
             , videoUrl = "kvOPZVjBsNA"}
         , {videoTitle = "OOP-論理は物質の手足" 
@@ -171,12 +171,12 @@ list2_Movies =
         ]
     }
 
-list3_Movies : MovieList
-list3_Movies =
-    { listSortNo = 2
-    , listTitle = "ゲーム講習"
-    , startingPosition = initStartNo
-    , movieData = [
+list3_Videos : Playlist
+list3_Videos =
+    { index = 2
+    , title = "ゲーム講習"
+    , scrollViewPosition = initScrollViewPosition
+    , videos = [
         {videoTitle = "【初歩編】第1回" 
             , videoUrl = "Ht6R3OosXDk"}
        , {videoTitle = "【初歩編】第2回" 
@@ -192,12 +192,12 @@ list3_Movies =
         ]
     }
 
-list4_Movies : MovieList
-list4_Movies =
-    { listSortNo = 3
-    , listTitle = "System Design講習"
-    , startingPosition = initStartNo
-    , movieData = [
+list4_Videos : Playlist
+list4_Videos =
+    { index = 3
+    , title = "System Design講習"
+    , scrollViewPosition = initScrollViewPosition
+    , videos = [
         {videoTitle = "part1"
             , videoUrl = "CVHci7zRaw4"}
         , {videoTitle = "part2"
@@ -212,15 +212,15 @@ initialModel : Model
 initialModel =
     { width = 0
     , height = 0
-    , movieList = [
-        list1_Movies
-        , list2_Movies
-        , list3_Movies
-        , list4_Movies
+    , playlists = [
+        list1_Videos
+        , list2_Videos
+        , list3_Videos
+        , list4_Videos
         ]
     }
-initStartNo : Int
-initStartNo =
+initScrollViewPosition : Int
+initScrollViewPosition =
     0
 
 type Direction
@@ -231,7 +231,7 @@ type Msg
     = NoOp
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
-    | Schroll ( Int, Direction)
+    | Scroll ( Int, Direction)
 
 -- UPDATE
 setCurrentDimensions : { a | width : b, height : c } -> ( b, c ) -> { a | width : b, height : c }
@@ -250,61 +250,59 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        Schroll ( targetListNo, direction ) ->
-            ( setSchroll model ( targetListNo, direction ), Cmd.none )
+        Scroll ( targetPlaylistIndex, direction ) ->
+            ( scroll model ( targetPlaylistIndex, direction ), Cmd.none )
 
-setSchroll : Model -> ( Int, Direction ) -> Model
-setSchroll model ( targetListNo, direction ) =
+scroll : Model -> ( Int, Direction ) -> Model
+scroll model ( targetPlaylistIndex, direction ) =
     let
-        setMovieList =
-            List.map ( checkTargetList ( targetListNo, direction ) ) model.movieList
+        setPlaylist =
+            List.map ( slideView ( targetPlaylistIndex, direction ) ) model.playlists
     in
-        { model | movieList = setMovieList }
+        { model | playlists = setPlaylist }
 
-checkTargetList : ( Int, Direction ) -> MovieList -> MovieList
-checkTargetList ( targetListNo, direction ) movie =
-    if movie.listSortNo == targetListNo then
-        setStartingPosition ( direction ) movie
-    else
-        movie
 
-setStartingPosition : ( Direction ) -> MovieList -> MovieList
-setStartingPosition ( direction ) movie =
+slideView : ( Int, Direction ) -> Playlist -> Playlist
+slideView ( targetPlaylistIndex, direction ) playlist =
     let
-        nextStartingPosition = 
-            directionSelecter movie.startingPosition direction
+        newScrollViewPosition = 
+            shiftPosition playlist.scrollViewPosition direction
         
         maxPos =
-            List.length(movie.movieData)
+            List.length(playlist.videos)
+
+        isTarget = playlist.index == targetPlaylistIndex
+
+        validTarget = isTarget && isInRange newScrollViewPosition maxPos
     in
     
-    if nextPositionChecker nextStartingPosition maxPos then
-        { movie | startingPosition = nextStartingPosition } 
+    if validTarget then
+        { playlist | scrollViewPosition = newScrollViewPosition } 
     else
-        movie
+        playlist
 
-directionSelecter : Int -> Direction -> Int
-directionSelecter startingPosition direction =
+shiftPosition : Int -> Direction -> Int
+shiftPosition scrollViewPosition direction =
     case direction of
         MoveRight ->
-            startingPosition + 1
+            scrollViewPosition + 1
         MoveLeft ->
-            startingPosition - 1
+            scrollViewPosition - 1
 
-nextPositionChecker : Int -> Int -> Bool
-nextPositionChecker nextStartingPosition maxLength =
+isInRange : Int -> Int -> Bool
+isInRange newScrollViewPosition maxLength =
     let
-        toDOPos : Int -> Int -> Cramp
-        toDOPos min max =
+        getRange : Int -> Int -> Cramp
+        getRange min max =
             { minPos = min
             , maxPos = max }
-        cramp = toDOPos 0 maxLength
+        cramp = getRange 0 maxLength
     in
     
-    (cramp.minPos <= nextStartingPosition) && ( nextStartingPosition < cramp.maxPos )
+    (cramp.minPos <= newScrollViewPosition) && ( newScrollViewPosition < cramp.maxPos )
 
-movieListElement : Model -> Html Msg
-movieListElement model=
+playlistElement : Model -> Html Msg
+playlistElement model=
     Element.layout ( stylesheet model ) <|
         column None
             [] [
@@ -317,7 +315,7 @@ movieListElement model=
                     column Main
                         []
                         ( List.concat
-                            [ movieListLayout model ]
+                            [ playlistLayout model ]
                         )
                 , footerwLayout model
             ]
@@ -361,8 +359,8 @@ headerLayout model =
                         )
                 ] 
         ]
-movieListLayout : Model -> List (Element Styles variation Msg)
-movieListLayout model=
+playlistLayout : Model -> List (Element Styles variation Msg)
+playlistLayout model=
     [ column None
         [][
             column None [][
@@ -370,13 +368,13 @@ movieListLayout model=
                 -- This is for sample purposes only and will be deleted later.
                 , column None
                     []
-                    ( List.map ( movieListSetting model.width model.height ) model.movieList )
+                    ( List.map ( playlistSetting model.width model.height ) model.playlists )
             ]
         ]
     ]
 
-movieListSetting : Float -> Float -> MovieList -> Element Styles variation Msg
-movieListSetting modelWidth modelHeight movies = 
+playlistSetting : Float -> Float -> Playlist -> Element Styles variation Msg
+playlistSetting modelWidth modelHeight movies = 
     column None
         [ paddingBottom 30 ][
             column ListTitle
@@ -384,21 +382,21 @@ movieListSetting modelWidth modelHeight movies =
                 , paddingBottom 0
                 , paddingRight 0
                 , paddingLeft 50 ][
-                    Element.text ( movies.listTitle )
-                    , Element.text ( "Sort : " ++ String.fromInt ( movies.listSortNo ) ++ " start : " ++ String.fromInt ( movies.startingPosition ) )
+                    Element.text ( movies.title )
+                    , Element.text ( "Sort : " ++ String.fromInt ( movies.index ) ++ " start : " ++ String.fromInt ( movies.scrollViewPosition ) )
                     -- This is for sample purposes only and will be deleted later.
                 ]
             , row None
                 [ EA.width fill ][
                 row None
                     [ paddingXY 15 0 ][
-                        Element.button MovieButton
+                        Element.button VideoButton
                             [ EA.width <| px ( modelWidth / 40 )
                             , EA.height <| px ( modelWidth / 40 ) 
                             , EA.verticalCenter
                             , onClick (
-                                Schroll (
-                                    movies.listSortNo
+                                Scroll (
+                                    movies.index
                                     , MoveLeft)
                             )
                         ]
@@ -416,18 +414,18 @@ movieListSetting modelWidth modelHeight movies =
                     [ EA.alignLeft
                     , clipX](
                         List.map (
-                            videoSettings modelWidth modelHeight (toFloat movies.startingPosition )
-                        ) movies.movieData
+                            videoSettings modelWidth modelHeight (toFloat movies.scrollViewPosition )
+                        ) movies.videos
                     )
                 , row None
                     [ paddingXY 15 0 ][
-                        Element.button MovieButton [ 
+                        Element.button VideoButton [ 
                             EA.width <| px ( modelWidth / 40 )
                             , EA.height <| px ( modelWidth / 40 )
                             , EA.verticalCenter
                             , onClick (
-                                Schroll (
-                                    movies.listSortNo
+                                Scroll (
+                                    movies.index
                                     , MoveRight
                                 )
                             )
@@ -445,21 +443,21 @@ movieListSetting modelWidth modelHeight movies =
                 ]
         ]
 
-videoSettings : Float -> Float -> Float -> Movie -> Element Styles variation msg
-videoSettings modelWidth modeiHeight startingPosition movie =
+videoSettings : Float -> Float -> Float -> Video -> Element Styles variation msg
+videoSettings modelWidth modeiHeight scrollViewPosition video =
     row None 
-        [ EA.moveLeft ( ( modelWidth - modelWidth / 10 ) /3 * ( startingPosition ) ) ][
+        [ EA.moveLeft ( ( modelWidth - modelWidth / 10 ) /3 * ( scrollViewPosition ) ) ][
         column None
             [ spacing 3
             , paddingXY ( modelWidth / 130 ) ( modeiHeight / 30 )
             , EA.center ][
-            row MovieRow
+            row VideoRow
                 [ ][
-                    Element.text movie.videoTitle
+                    Element.text video.videoTitle
                 ]
-            , row MovieRow
+            , row VideoRow
                 [][
-                    chabgeToElement( videoframe movie.videoUrl modelWidth modeiHeight )
+                    chabgeToElement( videoframe video.videoUrl modelWidth modeiHeight )
                 ]
             ]
         ]

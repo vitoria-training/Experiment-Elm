@@ -11,7 +11,7 @@ import Style.Font as Font
 import Browser
 import Browser.Dom exposing (Viewport)
 import Browser.Events as E
-import Http exposing (Header)
+import Html exposing (Html)
 
 type Styles
     = None
@@ -24,7 +24,7 @@ type Styles
 type Variation
     = Disabled
 
-stylesheet : { a | width : Float } -> StyleSheet Styles variation
+stylesheet : Model -> StyleSheet Styles variation
 stylesheet model =
     Style.styleSheet
         [ style None [] -- It's handy to have a blank style
@@ -32,18 +32,18 @@ stylesheet model =
             [ Color.background Color255.darkGray ]
         , style Footer
             [ Color.background Color255.darkGray
-            , Font.size (model.width / 100)
+            , Font.size ( model.width / 100 )
             ]
         , style Main
-            [ Border.all 1 -- set all border widths to 1 px.
+            [ Border.all 1
             , Color.text Color255.darkCharcoal
             , Color.background Color255.white
             , Color.border Color255.grey
-            , Font.size (model.width / 80)
-            , Font.lineHeight 1.3 -- line height, given as a ratio of current font size.
+            , Font.size ( model.width / 80 )
+            , Font.lineHeight 1.3
             ]
         , style Logo
-            [ Font.size (model.width / 40)
+            [ Font.size ( model.width / 40 )
             ]
         , style Button
             [ Color.text Color255.black
@@ -52,7 +52,7 @@ stylesheet model =
             , hover
                 [ Color.background Color255.gray
                 ]
-            , Font.size (model.width / 40)
+            , Font.size ( model.width / 40 )
             , Border.all 2
             ]
         ]
@@ -63,14 +63,14 @@ main =
         handleResult v =
             case v of
                 Err _ ->
-                    NoOp
+                    Nothing
 
                 Ok vp ->
                     GotInitialViewport vp
     in
     Browser.element
         { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
-        , view = aboutElement
+        , view = topPageElement
         , update = update
         , subscriptions = subscriptions
         }
@@ -90,7 +90,7 @@ initialModel =
     , height = 0 }
 
 type Msg
-    = NoOp
+    = Nothing
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
 
@@ -108,69 +108,90 @@ update msg model =
         Resize ( w, h ) ->
             ( setCurrentDimensions model ( w, h ), Cmd.none )
 
-        NoOp ->
+        Nothing ->
             ( model, Cmd.none )
 
-aboutElement model=
-    Element.layout (stylesheet model) <|
+topPageElement : Model -> Html msg
+topPageElement model=
+    Element.layout ( stylesheet model ) <|
         column None
-            []
-            [ headerLayout model
-            , el None [ height (px (model.height - (model.height / 10)*2 ))
-                , yScrollbar
-                ] <|
-                column Main
-                    [ height fill
+            [][
+                headerLayout model
+                , el None
+                    [ height ( px ( model.height - ( model.height / 10 ) *2 ))
+                    , yScrollbar
+                    ] <|
+                    column Main
+                        [ height fill
                         , width fill
                         , center
                         , verticalCenter
-                    ]
-                    (List.concat
-                        [ viewLayout]
-                    )
-            , footerwLayout model
+                        ]
+                        (List.concat
+                            [ topPageLayout ]
+                        )
+                , footerLayout model
             ]
 
-
+headerLayout : Model -> Element Styles variation msg
 headerLayout model =
     row Header
         [ spread
-            , paddingXY 30 20 
-            , height (px (model.height / 10) )
-            , width (px (model.width) )
+        , paddingXY 30 20 
+        , height ( px ( model.height / 10 ) )
+        , width ( px ( model.width ) )
+        ][
+            el Logo
+                [ verticalCenter ] (
+                    image None 
+                        [ width ( px ( model.width / 25 ) )
+                        , height ( px ( model.width / 25 ) )
+                        ]{
+                            src = "../../Picture/VITORIA_logo.jpg"
+                            , caption = "VITORIA_logo"
+                        }
+                )
+            , row None
+                [ spacing 5
+                , verticalCenter ][
+                    button Button
+                        [ paddingXY 20 0 ](
+                            Element.text "Top"
+                        )
+                    , button Button
+                        [ paddingXY 20 0 ](
+                            Element.text "About"
+                        )
+                    , button Button
+                        [ paddingXY 20 0 ](
+                            Element.text "Contents"
+                        )
+                    , button Button
+                        [ paddingXY 20 0 ](
+                            Element.text "Contact"
+                        )
+                ]
         ]
-        [ el Logo [verticalCenter]
-            (image None[width (px (model.width / 25) )
-            , height (px (model.width / 25) )]
-                { src = "../../Picture/VITORIA_logo.jpg"
-                , caption = "VITORIA_logo"
-                }
-            )
-        , row None
-            [ spacing 5
-                , verticalCenter ]
-            [ button Button [paddingXY 20 0] (text "Top")
-                , button Button [paddingXY 20 0] (text "About")
-                , button Button [paddingXY 20 0] (text "Contents")
-                , button Button [paddingXY 20 0] (text "Contact")
-            ] 
-        ]
-viewLayout =
+
+topPageLayout : List (Element Styles variation msg)
+topPageLayout =
     [ textLayout None
-        [ spacingXY 25 25
-        ]
-        [ button Button [paddingXY 20 0] (
-            text "Play Contents!"
-            )
+        [ spacingXY 25 25 ][
+            button Button
+                [paddingXY 20 0] (
+                    text "Play Contents!"
+                )
         ]
     ]
 
-footerwLayout model =
+footerLayout : Model -> Element Styles variation msg
+footerLayout model =
     row Footer
-        []
-        [ paragraph None [height (px (model.height / 10) )
-            , width (px (model.width) )
-            , paddingLeft  (model.width / 50)] [
-            text "© 2023 React Inc. All Rights Reserved.I'm happy! thank you!"
-            ]
+        [ paddingLeft  ( model.width / 50 )
+        , height ( px ( model.height / 10 ) )
+        , width ( px ( model.width ) ) ][
+            paragraph None
+                [] [
+                    Element.text "© 2023 React Inc. All Rights Reserved.I'm happy! thank you!"
+                ]
         ]

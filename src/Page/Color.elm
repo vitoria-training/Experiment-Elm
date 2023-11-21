@@ -45,6 +45,7 @@ module Page.Color
           -- , toRgb
         , white
         , yellow
+        , translucentGray
         )
 
 {-| -}
@@ -279,3 +280,9 @@ charcoal =
 darkCharcoal : Color
 darkCharcoal =
     rgba 46 52 54 1
+
+
+{-| -}
+translucentGray : Color
+translucentGray =
+    rgba 33 43 54 0.4

@@ -56,3 +56,120 @@ https://www.linkedin.com/pulse/7-best-practices-writing-good-git-commitmessages-
 
 ### Pull Requests
 Please link the issue on the description. you can link the issue id by typing `#`
+
+## Starting Docker (elm) from VSCode
+reference https://zenn.dev/aoaoaoaoaoaoaoi/articles/5fdbb959616c8c#1.%E3%80%8Cdocker-compose.yml%E3%80%8D%E3%82%92%E4%BD%9C%E6%88%90
+
+### Directory structure
+```
+│  docker-compose.yml
+│
+├─.devcontainer
+│      devcontainer.json
+│
+├─docker
+│      Dockerfile
+│
+└─work
+　 └─[elm project]
+```
+※[elm project] is the name of the project being created.
+
+### Create “docker-compose.yml”
+docker-compose.yml
+```
+version: '3.9'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - ./work:/work
+      - /work/node_modules
+    ports:
+      - "8000:8000"
+    command: sleep infinity
+
+```
+※If you do not add "command: sleep infinity", an error will occur at startup
+
+### Create docker directory
+Dockerfile
+```
+FROM node:17.0.1-buster-slim
+
+WORKDIR /work
+
+RUN apt update
+RUN apt-get install sudo
+RUN apt install -y vim
+RUN yes | sudo apt install curl
+
+RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz
+RUN gunzip elm.gz
+RUN chmod +x elm
+RUN sudo mv elm /usr/local/bin/
+RUN npm install --save elm elm-live
+RUN sed -i -e "s/\(ignoreInitial: true,\)/\1\n    usePolling: true, /g" /work/node_modules/elm-live/lib/src/watch.js
+
+ENV PATH $PATH:/usr/local/bin
+
+```
+
+### Create “.devcontainer” directory
+devcontainer.json
+```
+{
+	"name": "Existing Docker Compose (Extend)",
+	"dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+	"service": "app",
+	"workspaceFolder": "/work"
+}
+```
+
+### Create "work" directory
+Create a “work” directory in the root directory.
+Put the Elm project in the "work" directory.
+
+### Insert Dev Container into VSCode
+Search for "Dev Container" in VSCode extensions and install it.
+
+### Open with docker
+1.Start "Docker Desktop".
+
+※Work with VSCode from here.
+
+2.Press "><" at the bottom left of VSCode.
+(Can enter the development container.
+ If not Search for "Remote Development" in VSCode extensions and install it.)
+
+3.Select "Reopen in Container".
+
+4.Select “Open with docker-compose.yml”.
+
+5.After confirming that the container is running on "Docker Desktop",
+confirm that you are in the development container with VSCode and start the terminal.
+
+6.Run the following command in the terminal.
+
+※Executes only at first startup.
+```
+elm init
+```
+Place [elm project] in the specified location.
+[elm project] is the name of the project being created.
+※From the second startup onward,
+  if there is no difference in the source from the previous execution, there is no need to run it.
+```
+cp -r /work/[elm project]/ /usr/local/bin/src/
+```
+
+Build the Elm project.
+```
+elm reactor
+```
+
+7.Check that the project is displayed at http://localhost:8000/.

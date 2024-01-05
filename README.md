@@ -143,20 +143,20 @@ Search for "Dev Container" in VSCode extensions and install it.
 ※Work with VSCode from here.
 
 2.Press "><" at the bottom left of VSCode.
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/e5dff3fd-c886-40b3-bfd0-781ebec09994)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/ddd9f05c-436c-4141-8866-f3a25196d7bf)
 (Can enter the development container.
  If not Search for "Remote Development" in VSCode extensions and install it.)
 
 3.Select "Reopen in Container".
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/66286766-7644-4d15-a0d0-443f0bc4c50a)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/963734f9-4fca-462b-9158-005a84a3982b)
 
 4.Select “Open with docker-compose.yml”.
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/647bcca4-f87a-41d3-9f4c-fc3ec600f377)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/c9933090-fe63-4d28-ae10-2e17067f90ae)
 
 5.After confirming that the container is running on "Docker Desktop",
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/0457cd03-2796-4589-8fab-ada50b39a7f6)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/8a8294b1-e15f-4ca7-a24c-e9f1f35ef2ce)
 confirm that you are in the development container with VSCode and start the terminal.
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/0c62ba59-64ce-45a3-8d42-d6549072cc95)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/ff760445-c64a-4277-a7c4-08d43be8398b)
 
 6.Run the following command in the terminal.
 
@@ -189,6 +189,7 @@ elm reactor
 ![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/ac3172bf-e45e-41a8-9072-2df4d8f9d8db)
 
 ![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/f1c41a52-504d-4969-a2c6-4b487a682f71)
+
 
 Display "/src/Page/Wireframe/TopPage/TopPage.elm" as a trial.
 ![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/00121278-99f6-4d7d-870a-5df430c97a53)

@@ -175,9 +175,19 @@ Place [elm project] in the specified location.
 ※From the second startup onward,
   if there is no difference in the source from the previous execution, there is no need to run it.
 ```
-cp -r /work/[elm project]/ /usr/local/bin/src/
+cp -r /work/[elm project]/*/ /usr/local/bin/src/
 ```
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/a83d6d86-680b-46fa-87f9-2f1ff158e40d)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/335b367b-f821-4c82-92ab-70d14ac49878)
+
+The files under [elm project] are expanded to "/usr/local/bin/src/".
+
+- [elm project]
+
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/af2be093-27d3-47af-b90c-67f1332d819a)
+
+- "/usr/local/bin/src/"
+
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/d57d12f9-640a-4f76-91cb-c6f823568d7a)
 
 Build the Elm project.
 ```

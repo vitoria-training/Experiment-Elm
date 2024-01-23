@@ -62,16 +62,11 @@ reference https://zenn.dev/aoaoaoaoaoaoaoi/articles/5fdbb959616c8c#1.%E3%80%8Cdo
 
 ### Directory structure
 ```
-│  docker-compose.yml
+├─docker-compose.yml
 │
-├─.devcontainer
-│      devcontainer.json
+├─Dockerfile
 │
-├─docker
-│      Dockerfile
-│
-└─work
-　 └─[elm project]
+└─[elm project]
 ```
 ※[elm project] is the name of the project being created.
 
@@ -83,9 +78,9 @@ services:
   app:
     build:
       context: .
-      dockerfile: ./docker/Dockerfile
+      dockerfile: ./Dockerfile
     volumes:
-      - ./work:/work
+      - ./:/work/[elm project]
       - /work/node_modules
     ports:
       - "8000:8000"
@@ -110,29 +105,10 @@ RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/b
 RUN gunzip elm.gz
 RUN chmod +x elm
 RUN sudo mv elm /usr/local/bin/
-RUN npm install --save elm elm-live
-RUN sed -i -e "s/\(ignoreInitial: true,\)/\1\n    usePolling: true, /g" /work/node_modules/elm-live/lib/src/watch.js
 
 ENV PATH $PATH:/usr/local/bin
 
 ```
-
-### Create “.devcontainer” directory
-devcontainer.json
-```
-{
-	"name": "Existing Docker Compose (Extend)",
-	"dockerComposeFile": [
-		"../docker-compose.yml"
-	],
-	"service": "app",
-	"workspaceFolder": "/work"
-}
-```
-
-### Create "work" directory
-Create a “work” directory in the root directory.
-Put the Elm project in the "work" directory.
 
 ### Insert Dev Container into VSCode
 Search for "Dev Container" in VSCode extensions and install it.
@@ -148,58 +124,32 @@ Search for "Dev Container" in VSCode extensions and install it.
  If not Search for "Remote Development" in VSCode extensions and install it.)
 
 3.Select "Reopen in Container".
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/963734f9-4fca-462b-9158-005a84a3982b)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/356b4f2c-4c6a-4f4d-a5b1-64a54d5a2303)
 
 4.Select “Open with docker-compose.yml”.
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/c9933090-fe63-4d28-ae10-2e17067f90ae)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/92724578-ad83-49e3-9f63-446867b7154b)
 
-5.After confirming that the container is running on "Docker Desktop",
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/8a8294b1-e15f-4ca7-a24c-e9f1f35ef2ce)
+5.Don't select anything and press OK.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/d3f91fde-3557-4f0d-a1e1-71ab38951678)
+
+6.After confirming that the container is running on "Docker Desktop",
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/30875621-250e-4e84-9627-cb87ddb97456)
 confirm that you are in the development container with VSCode and start the terminal.
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/ff760445-c64a-4277-a7c4-08d43be8398b)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/9e22bcaa-7630-4a19-8f15-1eb39a963e14)
 
-6.Run the following command in the terminal.
-
-※Executes only at first startup.
-```
-elm init
-```
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/2b32a4c4-17fb-4aa1-9621-c3a2818a191e)
-
-Enter "Y".
-
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/e387b9f5-ec74-47f9-ba21-9fbed576314e)
-
-Place [elm project] in the specified location.
-[elm project] is the name of the project being created.
-※From the second startup onward,
-  if there is no difference in the source from the previous execution, there is no need to run it.
-```
-cp -r /work/[elm project]/*/ /usr/local/bin/src/
-```
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/335b367b-f821-4c82-92ab-70d14ac49878)
-
-The files under [elm project] are expanded to "/usr/local/bin/src/".
-
-- [elm project]
-
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/af2be093-27d3-47af-b90c-67f1332d819a)
-
-- "/usr/local/bin/src/"
-
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/d57d12f9-640a-4f76-91cb-c6f823568d7a)
+7.Run the following command in the terminal.
 
 Build the Elm project.
 ```
 elm reactor
 ```
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/b997ecae-b857-4e07-9404-97f52f74e4fa)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/e2a40400-49b5-4d12-b49c-1acd0e569d80)
 
-7.Check that the project is displayed at http://localhost:8000/.
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/ac3172bf-e45e-41a8-9072-2df4d8f9d8db)
+8.Check that the project is displayed at http://localhost:8000/.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/9b25e915-a6a1-4e0e-820e-69ecdd366dd0)
 
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/f1c41a52-504d-4969-a2c6-4b487a682f71)
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/c3ae3783-1029-45b6-80ff-6cf2f4d98d85)
 
 
-Display "/src/Page/Wireframe/TopPage/TopPage.elm" as a trial.
-![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/00121278-99f6-4d7d-870a-5df430c97a53)
+Display "/src/Page/Top/Top.elm" as a trial.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/1626105a-1a47-4c2c-a451-480bc8828e28)

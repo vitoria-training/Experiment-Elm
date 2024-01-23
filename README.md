@@ -88,6 +88,7 @@ services:
 
 ```
 ※If you do not add "command: sleep infinity", an error will occur at startup
+※"app:" is a temporary name and can be changed.
 
 ### Create docker directory
 Dockerfile

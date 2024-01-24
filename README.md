@@ -62,15 +62,20 @@ reference https://zenn.dev/aoaoaoaoaoaoaoi/articles/5fdbb959616c8c#1.%E3%80%8Cdo
 
 ### Directory structure
 ```
-├─docker-compose.yml
-│
-├─Dockerfile
-│
-└─[elm project]
+[ElmProject]
+  │
+  ├─docker-compose.yml
+  │
+  ├─Dockerfile
+  │
+  ├─(Other files)
+  ・
+  ・
+  ・
 ```
-※[elm project] is the name of the project being created.
+※This time, we will use the one already placed in the Elm project.
 
-### Create “docker-compose.yml”
+### Contents of "docker-compose.yml".
 docker-compose.yml
 ```
 version: '3.9'
@@ -89,8 +94,9 @@ services:
 ```
 ※If you do not add "command: sleep infinity", an error will occur at startup
 ※"app:" is a temporary name and can be changed.
+※[elm project] is the name of the project being created.
 
-### Create docker directory
+### Contents of "Dockerfile".
 Dockerfile
 ```
 FROM node:17.0.1-buster-slim

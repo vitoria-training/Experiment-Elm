@@ -75,48 +75,6 @@ reference https://zenn.dev/aoaoaoaoaoaoaoi/articles/5fdbb959616c8c#1.%E3%80%8Cdo
 ```
 ※This time, we will use the one already placed in the Elm project.
 
-### Contents of "docker-compose.yml".
-docker-compose.yml
-```
-version: '3.9'
-services:
-  app:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    volumes:
-      - ./:/work/[elm project]
-      - /work/node_modules
-    ports:
-      - "8000:8000"
-    command: sleep infinity
-
-```
-※If you do not add "command: sleep infinity", an error will occur at startup
-※"app:" is a temporary name and can be changed.
-※[elm project] is the name of the project being created.
-
-### Contents of "Dockerfile".
-Dockerfile
-```
-FROM node:17.0.1-buster-slim
-
-WORKDIR /work
-
-RUN apt update
-RUN apt-get install sudo
-RUN apt install -y vim
-RUN yes | sudo apt install curl
-
-RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz
-RUN gunzip elm.gz
-RUN chmod +x elm
-RUN sudo mv elm /usr/local/bin/
-
-ENV PATH $PATH:/usr/local/bin
-
-```
-
 ### Insert Dev Container into VSCode
 Search for "Dev Container" in VSCode extensions and install it.
 

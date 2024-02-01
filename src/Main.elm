@@ -1,20 +1,91 @@
 module Main exposing (..)
 
+import Page.Color as Color255
 import Task
-import Html exposing (..)
 import Element exposing (..)
-import Element.Background as Background
-import Element.Font as Font
-import Element.Input as Input
+import Element.Input as Input exposing (..)
+import Element.Attributes exposing (..)
+import Element.Events exposing (onClick)
+import Element.Events exposing (stopPropagationOn)
+import Style exposing (..)
+import Style.Border as Border
+import Style.Color as Color
+import Style.Font as Font
 import Browser
 import Browser.Dom exposing (Viewport)
 import Browser.Events as E
-import Page.Contents.PullDownList as PullDownList
-import Page.MovieList.MovieList as VideoList
-import Page.Contact.ContactForm as ContactForm
-import Page.About.About as CompanyProfile
-import Page.Footer as Footer
-import Page.CommonParts as CP
+import Html exposing (Html)
+import Json.Decode as D
+
+type Styles
+    = None
+    | Header
+    | Footer
+    | Main
+    | Logo
+    | Button
+    | MajorItem
+    | MinorItem
+    | DialogContainerStyle
+    | ModalContentStyle
+    | TextBox
+
+type Variation
+    = Disabled
+
+stylesheet : Model -> StyleSheet Styles variation
+stylesheet model =
+    Style.styleSheet
+        [ style None [] -- It's handy to have a blank style
+        , style Header
+            [ Color.background Color255.darkGray ]
+        , style Footer
+            [ Color.background Color255.darkGray
+            , Font.size ( model.width / 100 )
+            ]
+        , style Main
+            [ Border.all 1
+            , Color.text Color255.darkCharcoal
+            , Color.background Color255.white
+            , Color.border Color255.grey
+            , Font.size ( model.width / 80 )
+            , Font.lineHeight 1.3
+            ]
+        , style Logo
+            [ Font.size ( model.width / 40 )
+            ]
+        , style Button
+            [ Color.text Color255.black
+            , Color.background Color255.white
+            , Color.border Color255.black
+            , hover
+                [ Color.background Color255.gray
+                ]
+            , Font.size ( model.width / 40 )
+            , Border.all 2
+            ]
+        , style MajorItem
+            [ Color.text Color255.white
+            , Color.background Color255.black
+            , Color.border Color255.black
+            , Font.size ( model.width / 40 )
+            , Border.all 2]
+        , style MinorItem
+            [ Color.text Color255.black
+            , Color.background Color255.white
+            , Color.border Color255.black
+            , Font.size ( model.width / 40 )
+            , Border.all 2]
+        , style DialogContainerStyle
+            [ Color.background Color255.translucentGray
+            ]
+        , style ModalContentStyle
+            [ Color.background Color255.white
+            ]
+        , style TextBox
+            [ Border.all 1
+            ]
+        ]
 
 main : Program () Model Msg
 main =
@@ -22,72 +93,83 @@ main =
         handleResult v =
             case v of
                 Err _ ->
-                    NoOp
+                    Nothing
 
                 Ok vp ->
                     GotInitialViewport vp
     in
     Browser.element
         { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
-        , view = headerElement
+        , view = mainPageElement
         , update = update
         , subscriptions = subscriptions
         }
-        
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.batch
+        [E.onResize (\w h -> Resize ( toFloat w, toFloat h ))
+        , case model.dropdownStatus of
+            Open -> 
+                case model.contentsButtonStatus of
+                    ButtonOn ->
+                        E.onClick ( D.succeed DropDownAndButtonClose )
+                    ButtonOff ->
+                        E.onClick ( D.succeed DropDownClose )
+            Close ->
+                case model.contentsButtonStatus of
+                    ButtonOn ->
+                        E.onClick ( D.succeed DropDownOpen )
+                    ButtonOff ->
+                        Sub.none
+        ]
 
 -- MODEL
-
 type alias Model =
     { width : Float
     , height : Float
-    , screenTitle : Screen
-    , listStatus : Status }
-
-type Status
-    = Open
-    | Close
-
-type Screen
-    = Top
-    | Contents
-    | About
-    | Contact
+    , name : String
+    , contentsButtonStatus : ButtonStatus
+    , dropdownStatus : Status
+    , modalStatus : Status}
 
 initialModel : Model
 initialModel =
     { width = 0
     , height = 0
-    , screenTitle = Top
-    , listStatus = Close }
+    , name = ""
+    , contentsButtonStatus = ButtonOff
+    , dropdownStatus = Close
+    , modalStatus = Close }
 
 type Msg
-    = NoOp
+    = Nothing
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
-    | ChangeOpen
-    | ChangeClose
-    | ChangeTop
-    | ChangeContents
-    | ChangeAbout
-    | ChangeContact
+    | DropDownButtonOn
+    | DropDownButtonOff
+    | DropDownAndButtonClose
+    | DropDownOpen
+    | DropDownClose
+    | ModalOpen
+    | ModalClose
+    | InputName String
 
-subscriptions : model -> Sub Msg
-subscriptions _ =
-    E.onResize (\w h -> Resize ( toFloat w, toFloat h ))
+type Status
+    = Open
+    | Close
+
+type ButtonStatus
+    = ButtonOn
+    | ButtonOff
 
 -- UPDATE
 setCurrentDimensions : { a | width : b, height : c } -> ( b, c ) -> { a | width : b, height : c }
 setCurrentDimensions model ( w, h ) =
     { model | width = w, height = h }
-
-setChangeListStatus : { a | listStatus : b } -> b -> { a | listStatus : b }
-setChangeListStatus model ( status ) =
-    { model | listStatus = status }
-
-setChangeScreenAndListStatus : { a | screenTitle : b, listStatus : c } -> ( b, c ) -> { a | screenTitle : b, listStatus : c }
-setChangeScreenAndListStatus model ( page, status ) =
-    { model | screenTitle = page
-            , listStatus = status }
+setName : { a | name : b } -> b -> { a | name : b }
+setName model ( s ) =
+    { model | name = s }
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -98,178 +180,304 @@ update msg model =
         Resize ( w, h ) ->
             ( setCurrentDimensions model ( w, h ), Cmd.none )
 
-        NoOp ->
+        Nothing ->
             ( model, Cmd.none )
-        
-        ChangeOpen ->
-            ( setChangeListStatus model ( Open ), Cmd.none )
 
-        ChangeClose ->
-            ( setChangeListStatus model ( Close ), Cmd.none )
+        DropDownButtonOn ->
+            ( { model |contentsButtonStatus = ButtonOn }, Cmd.none )
 
-        ChangeTop ->
-            ( setChangeScreenAndListStatus model ( Top, Close ), Cmd.none )
+        DropDownButtonOff ->
+            ( { model |contentsButtonStatus = ButtonOff }, Cmd.none )
 
-        ChangeContents ->
-            ( setChangeScreenAndListStatus model ( Contents, Close ), Cmd.none )
+        DropDownAndButtonClose ->
+            ( { model |dropdownStatus = Close
+                , contentsButtonStatus = ButtonOff }, Cmd.none )
 
-        ChangeAbout ->
-            ( setChangeScreenAndListStatus model ( About, Close ), Cmd.none )
+        DropDownOpen ->
+            ( { model |dropdownStatus = Open }, Cmd.none )
 
-        ChangeContact ->
-            ( setChangeScreenAndListStatus model ( Contact, Close ), Cmd.none )
+        DropDownClose ->
+            ( { model |dropdownStatus = Close }, Cmd.none )
 
--- HeaderButoon template
-butoonFontSize : Float -> Int
-butoonFontSize width=
-  round width // 70
+        ModalOpen ->
+            ( { model |modalStatus = Open }, Cmd.none )
 
-topPaddingXY : { x : number, y : number }
-topPaddingXY =
-  { x = 35
-  , y = 70}
+        ModalClose ->
+            ( { model |modalStatus = Close }, Cmd.none )
 
-aboutPaddingXY : { x : number, y : number }
-aboutPaddingXY =
-  { x = 50
-  , y = 70}
+        InputName s ->
+            ( setName model ( s ), Cmd.none )
 
-contentsPaddingXY : { x : number, y : number }
-contentsPaddingXY =
-  { x = 20
-  , y = 70}
+mainPageElement : Model -> Html Msg
+mainPageElement model=
+    Element.layout ( stylesheet model ) <|
+        column None
+            [][
+                headerLayout model
+                , el None
+                    [ height ( px ( model.height - ( model.height / 10 ) *2 ))
+                    , yScrollbar
+                    ] <|
+                    column Main
+                        [ height fill
+                        , width fill
+                        , center
+                        , verticalCenter
+                        ]
+                        (List.concat
+                            [ mainPageLayout model ]
+                        )
+                , footerLayout model
+            ]
 
-contactPaddingXY : { x : number, y : number }
-contactPaddingXY =
-  { x = 60
-  , y = 70}
-
-headerButoon : { a | width : Float, height : Float } -> { b | x : Int, y : Int } -> String -> d -> Element d
-headerButoon model paddingXYValue label onPress=
-  column [ width <| px ( round model.width // 10 )] [
-    Input.button[ paddingXY ( round model.width // paddingXYValue.x ) ( round model.height // paddingXYValue.y )
-      , spacing ( round model.height // 60 )
-      , width <| px ( round model.width // 12 )
-      , height fill
-      , Background.color ( rgb255 211 211 211 )
-      , Font.color ( rgb255 0 0 0 )
-      , Font.size ( butoonFontSize model.width )
-      , centerX
-      , centerY
-    ]
-    { label = Element.text <| label
-      , onPress = Just onPress
-    }
-  ]
-
--- View
-headerElement : Model -> Html Msg
-headerElement model =
-    let
-        contentsList =
-            case model.listStatus of
-              Open ->
-                column [ width <| px ( round model.width // 6 ) ] [
-                    Input.button[ paddingXY ( round model.width // contentsPaddingXY.x ) ( round model.height // contentsPaddingXY.y )
-                      , spacing ( round model.height // 60 )
-                      , width <| px ( round model.width // 6 )
-                      , height fill
-                      , Background.color ( rgb255 211 211 211 )
-                      , Font.color ( rgb255 0 0 0 )
-                      , Font.size ( butoonFontSize model.width )
-                      , centerX
-                      , centerY
-                      , below ( PullDownList.videolink model.width model.height )
-                      ]
-                  { label = Element.text <| "Contents"
-                      , onPress = Just ChangeClose
-                  }
-                ]
-
-              Close ->
-                column [ width <| px ( round model.width // 6 ) ] [
-                    Input.button[ paddingXY ( round model.width // contentsPaddingXY.x ) ( round model.height // contentsPaddingXY.y )
-                      , spacing ( round model.height // 60 )
-                      , width <| px ( round model.width // 6 )
-                      , height fill
-                      , Background.color ( rgb255 211 211 211 )
-                      , Font.color ( rgb255 0 0 0 )
-                      , Font.size ( butoonFontSize model.width )
-                      , centerX
-                      , centerY
-                      ]
-                  { label = Element.text <| "Contents"
-                      , onPress = Just ChangeOpen
-                  }
-                ]
-        playContents = 
-          case model.screenTitle of
-            Top -> 
-              column [ width fill
-                , height <| px ( CP.contentHeight model.height ) ] [
-                row [ width fill ][
-                  column [ width fill
-                    , height  <| px ( round model.height - round model.height // 7 ) ] []
-                  , column[][
-                    Input.button[ paddingXY ( round model.width // 40 ) ( round model.height // 70 )
-                      , spacing ( round model.height // 60 )
-                      , width <| px ( round model.width // 7 )
-                      , Background.color ( rgb255 211 211 211 )
-                      , Font.color ( rgb255 0 0 0 )
-                      , Font.size ( butoonFontSize model.width )
-                      , centerX
-                      , centerY
+headerLayout : Model -> Element Styles variation Msg
+headerLayout model =
+    let 
+        contentsButton =
+            case model.dropdownStatus of
+                Open ->
+                    row None[][
+                        Element.below [accordionVideolink model.width model.height] empty
+                        , button Button
+                            [ paddingXY 20 0 
+                            , onClick (
+                                    DropDownButtonOff
+                                )
+                            ](
+                                Element.text "Contents"
+                            )
                     ]
-                    { label = Element.text <| "Play Contents!"
-                    , onPress = Just ChangeContents
-                    }
-                  ]
-                  , column [ width fill ] []
+                Close ->
+                    row None[][
+                        button Button
+                            [ paddingXY 20 0 
+                            , onClick (
+                                    DropDownButtonOn
+                                )
+                            ](
+                                Element.text "Contents"
+                            )
+                    ]
+    in 
+    row Header
+        [ spread
+        , paddingXY 30 20 
+        , height ( px ( model.height / 10 ) )
+        , width ( px ( model.width ) )
+        ][
+            el Logo
+                [ verticalCenter ] (
+                    image None 
+                        [ width ( px ( model.width / 25 ) )
+                        , height ( px ( model.width / 25 ) )
+                        ]{
+                            src = "/src/Picture/VITORIA_logo.jpg"
+                            , caption = "VITORIA_logo"
+                        }
+                )
+            , row None
+                [ spacing 5
+                , verticalCenter ][
+                    button Button
+                        [ paddingXY 20 0 ](
+                            Element.text "Top"
+                        )
+                    , button Button
+                        [ paddingXY 20 0 ](
+                            Element.text "About"
+                        )
+                    , contentsButton
+                    , button Button
+                        [ paddingXY 20 0 ](
+                            Element.text "Contact"
+                        )
                 ]
-              ]
-            Contents -> 
-              column [ width fill ] [
-                VideoList.videoListElement model.width model.height
-              ]
-            About -> 
-              column [ width fill ] [
-                CompanyProfile.companyElement model.width model.height
-              ]
-            Contact ->
-              column [ width fill ] [
-                ContactForm.contactElement model.width model.height
-              ]
+        ]
 
-    in
-      Element.layout [ width fill
-                      , height fill ](
-          column[ width fill ][
-            row [ width fill
-              , height <| px ( round model.height // 15 )
-              ][
-              column [ width <| px ( round model.width // 30 ) ] [ 
-              -- Since I want it to be square, I use "height" and "width".
-              Element.image [ width <| px ( round model.width // 40 )
-                , height <| px ( round model.width // 40 )
-                , centerX
-                , centerY ]
-                { src = "Picture/elm_logo.png"
-                  , description = "elm_logo" }
-              ]
-              , column [ width fill] []
-              , headerButoon model topPaddingXY "Top" ChangeTop
-              , headerButoon model aboutPaddingXY "About" ChangeAbout
-              , contentsList
-              , headerButoon model contactPaddingXY "Contact" ChangeContact
-              , column [ width <| px ( round model.width // 100 ) ] [ ]
-             ]
-             , row[ width fill ][
-                playContents
-             ]
-             , row[ width fill ][
-                column [ width fill ] [
-                  Footer.footerElement model.width model.height
+accordionVideolink : Float -> Float -> Element Styles variation msg
+accordionVideolink modelWidth modelHeight=
+    column None
+        [ width (px (modelWidth/4.8))
+        , height (px (modelHeight/4.8) )][
+            majorItems "git講習"
+            , minorItem "https://www.youtube.com/embed/Js_8xBDhhwE" "基本コマンド1"
+            , minorItem "https://www.youtube.com/embed/eZ9M16REQiQ" "基本コマンド2"
+            , majorItems "ゲーム講習"
+            , minorItem "https://www.youtube.com/embed/Ht6R3OosXDk" "【初歩編】第1回"
+            , minorItem "https://www.youtube.com/embed/9g-NnkrScng" "【初歩編】第2回"
+        ]
+
+majorItems : String -> Element Styles variation msg
+majorItems title =
+    el MajorItem 
+        []( Element.text title )
+
+
+minorItem : String -> String -> Element Styles variation msg
+minorItem urlString titleString =
+    el MinorItem
+        []( newTab urlString ( Element.text titleString ) )
+
+mainPageLayout : Model -> List (Element Styles variation Msg)
+mainPageLayout model =
+    [ button  Button
+        [ paddingXY 20 0
+        , onClick(
+            ModalOpen
+        )](
+            Element.text "新規会員登録"
+        )
+    , if model.modalStatus == Open then
+        mainPageModal model
+    else
+        textLayout None [][]
+    ]
+
+mainPageModal : Model -> Element Styles variation Msg
+mainPageModal model =
+    modal DialogContainerStyle
+       [height ( px ( model.height ) )
+        , width ( px ( model.width ) )
+        , paddingTop ( model.height / 20 )
+        , paddingLeft ( model.width / 4 )
+        , onClick(
+            ModalClose
+        )] (
+            column ModalContentStyle
+                [ height ( px ( model.height / 1.3 ) )
+                , width ( px ( model.width / 2 ) ) 
+                , center
+                , yScrollbar
+                , onClickStopPropagation Nothing
+                ][
+                    h1 None
+                        [ paddingXY 0 10](
+                        row None
+                            [][
+                            row None
+                                [ width ( px ( model.width / 2 - ( model.width / 30 ) ) ) 
+                                , center][
+                                    Element.text "会員登録"
+                                ]
+                            , row None
+                                [alignRight][
+                                    image None 
+                                    [ width ( px ( model.width / 50 ) )
+                                    , height ( px ( model.width / 50 ) )
+                                    , onClick(
+                                        ModalClose
+                                        )
+                                    ]{
+                                        src = "/src/Picture/CloseButton.png"
+                                        , caption = "CloseButton"
+                                    }
+                                ]
+                            ]
+                        )
+                    , textLayout None
+                        [ paddingTop 10 ][
+                            Input.text TextBox
+                            [ padding 10
+                            , width ( px ( model.width / 3 ) ) ]{
+                                onChange = InputName
+                                , value = model.name
+                                , label =
+                                    Input.placeholder {
+                                        label = Input.labelAbove (
+                                        el None
+                                            [ verticalCenter ] (
+                                                Element.text "氏名"
+                                            )
+                                        )
+                                    , text = ""
+                                    }
+                                , options =[]
+                            }
+                        ]
+                    , textLayout None
+                        [ paddingTop 10 ][
+                            Input.text TextBox
+                            [ padding 10
+                            , width ( px ( model.width / 3 ) ) ]{
+                                onChange = InputName
+                                , value = model.name
+                                , label =
+                                    Input.placeholder {
+                                        label = Input.labelAbove (
+                                        el None
+                                            [ verticalCenter ] (
+                                                Element.text "メールアドレス"
+                                            )
+                                        )
+                                    , text = ""
+                                    }
+                                , options =[]
+                            }
+                        ]
+                    , textLayout None
+                        [ paddingTop 10 ][
+                            Input.newPassword TextBox
+                            [ padding 10
+                            , width ( px ( model.width / 3 ) ) ]{
+                                onChange = InputName
+                                , value = model.name
+                                , label =
+                                    Input.placeholder {
+                                        label = Input.labelAbove (
+                                        el None
+                                            [ verticalCenter ] (
+                                                Element.text "パスワード"
+                                            )
+                                        )
+                                        , text = ""
+                                    }
+                                , options =[]
+                            }
+                        ]
+                    , textLayout None
+                        [ paddingTop 10 ][
+                            Input.currentPassword TextBox
+                            [ padding 10
+                            , width ( px ( model.width / 3 ) ) ]{
+                                onChange = InputName
+                                , value = model.name
+                                , label =
+                                    Input.placeholder {
+                                        label = Input.labelAbove (
+                                        el None
+                                            [ verticalCenter ] (
+                                                Element.text "パスワード（確認）"
+                                            )
+                                        )
+                                        , text = ""
+                                    }
+                                , options =[]
+                            }
+                        ]
+                    , textLayout None
+                        [ padding 10 ][ 
+                        button Button
+                            [ onClick(
+                                ModalClose
+                            )](
+                                Element.text "送信"
+                            )
+                        ]
                 ]
-             ]
-          ]
-      )
+        )
+
+onClickStopPropagation : a -> Attribute variation a
+onClickStopPropagation msg =
+    stopPropagationOn "click" <| D.succeed ( msg, True )
+
+footerLayout : Model -> Element Styles variation msg
+footerLayout model =
+    row Footer
+        [ paddingLeft  ( model.width / 50 )
+        , height ( px ( model.height / 10 ) )
+        , width ( px ( model.width ) ) ][
+            paragraph None
+                [] [
+                    Element.text "© 2023 React Inc. All Rights Reserved.I'm happy! thank you!"
+                ]
+        ]

@@ -47,6 +47,7 @@ module Page.Color
         , yellow
         , translucentGray
         , pink
+        , clearBlue
         )
 
 {-| -}
@@ -293,3 +294,9 @@ translucentGray =
 pink : Color
 pink =
     rgba 239 207 227 1
+
+
+{-| -}
+clearBlue : Color
+clearBlue =
+    rgba 52 101 164 0.2

@@ -27,12 +27,10 @@ type Styles
     | ListTitle
     | VideoRow
     | VideoButton
-    | VideoStyle
     | Contents
     | ModalContentStyle
     | ModalBK
     | ButtonBK
-    | ButtonWH
     | MenuModalButton
     | BKWH
     | UnderLine
@@ -89,10 +87,6 @@ stylesheet model =
             , Font.size ( model.width / 50 )
             , Font.bold
             ]
-        , Style.style VideoStyle
-            [ Color.background Color255.darkGray
-            , Font.size ( model.width / 100 )
-            ]
         , Style.style Contents
             [ Font.size ( model.width / 100 )
             ]
@@ -109,14 +103,6 @@ stylesheet model =
         , Style.style ButtonBK
             [ Color.text Color255.white
             , Color.background Color255.black
-            , Color.border Color255.black
-            , Font.size ( model.width / 40 )
-            , Border.all 2
-            , Border.rounded 10.0
-            ]
-        , Style.style ButtonWH
-            [ Color.text Color255.black
-            , Color.background Color255.white
             , Color.border Color255.black
             , Font.size ( model.width / 40 )
             , Border.all 2
@@ -166,12 +152,11 @@ subscriptions _ =
 type alias Model =
     { width : Float
     , height : Float
-    , selectMajorItem : Int
-    , selectMinorItem : Int
-    , selectMovie : String
+    , selectMajorItem : Int      --Index selected in "Movie-contents"
+    , selectMovie : String       --url selected in "Movie-contents"
     , playlists : List Playlist
-    , menuStatus : OPStatus
-    , contentsStatus : OPStatus
+    , menuStatus : OPStatus      --menu modal status
+    , contentsStatus : OPStatus  --Status of contents in menu modal
     }
 
 type OPStatus
@@ -181,8 +166,8 @@ type OPStatus
 type alias Playlist =
     { index : Int
     , title : String
-    , scrollMovieContentsPosition : Int
-    , scrollAllMoviePosition : Int
+    , scrollMovieContentsPosition : Int --"Movie-contents" playlist position
+    , scrollAllMoviePosition : Int      --"All-Movie-contents" playlist position
     , videos : List Video
     }
 
@@ -190,6 +175,7 @@ type alias Video =
     { videoTitle : String
     , videoUrl : String
     , thumbnail : String
+    , position : Int
     }
 
 type ScrollAllMoviePosition =
@@ -210,19 +196,24 @@ list1_Videos =
     , videos = [
         {videoTitle = "基本コマンド1" 
             , videoUrl = "Js_8xBDhhwE"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_1.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_1.jpg"
+            , position = 0 }
         , {videoTitle = "基本コマンド2"
             , videoUrl = "eZ9M16REQiQ"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_2.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_2.jpg"
+            , position = 1 }
         , {videoTitle = "GitHub_1"
             , videoUrl = "laz2u--LoTg"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_3.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_3.jpg"
+            , position = 2 }
         , {videoTitle = "GitHub_2"
             , videoUrl = "tHZ9yR8I81w"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_4.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_4.jpg"
+            , position = 3 }
         , {videoTitle = "git内部の仕組み"
             , videoUrl = "qLyUayBh-T8"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_5.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_5.jpg"
+            , position = 4 }
         ]
     }
 
@@ -235,16 +226,20 @@ list2_Videos =
     , videos = [
         {videoTitle = "古代ギリシャ-中世編" 
             , videoUrl = "kvOPZVjBsNA"
-            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_1.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_1.jpg"
+            , position = 0 }
         , {videoTitle = "OOP-論理は物質の手足" 
             , videoUrl = "B3mgmghlEKY"
-            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_2.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_2.jpg"
+            , position = 1 }
        , {videoTitle = "論理世界への一元化" 
             , videoUrl = "ClyBlJ8LCQg"
-            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_3.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_3.jpg"
+            , position = 2 }
         , {videoTitle = "論理のみの世界 関数型パラダイム" 
             , videoUrl = "NGrLa92DHlc"
-            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_4.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_4.jpg"
+            , position = 3 }
         ]
     }
 
@@ -257,22 +252,28 @@ list3_Videos =
     , videos = [
         {videoTitle = "【初歩編】第1回" 
             , videoUrl = "Ht6R3OosXDk"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_1.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_1.jpg"
+            , position = 0 }
        , {videoTitle = "【初歩編】第2回" 
             , videoUrl = "9g-NnkrScng"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_2.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_2.jpg"
+            , position = 1 }
         , {videoTitle = "【初歩編】第3回" 
             , videoUrl = "f2SZjtkPF2Q"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_3.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_3.jpg"
+            , position = 2 }
         , {videoTitle = "【初歩編】第4回" 
             , videoUrl = "x4wB8ET-57Y"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_4.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_4.jpg"
+            , position = 3 }
         , {videoTitle = "番外編 プランナー編"
             , videoUrl = "7OvNuawE9ys"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourseEx_1.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourseEx_1.jpg"
+            , position = 4 }
         , {videoTitle = "番外編 インストラクター編"
             , videoUrl = "ZN9ywfx6XS4"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourseEx_2.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourseEx_2.jpg"
+            , position = 5 }
         ]
     }
 
@@ -285,13 +286,16 @@ list4_Videos =
     , videos = [
         {videoTitle = "part1"
             , videoUrl = "CVHci7zRaw4"
-            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_1.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_1.jpg"
+            , position = 0 }
         , {videoTitle = "part2"
             , videoUrl = "62x0qPk7W24"
-            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_2.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_2.jpg"
+            , position = 1 }
         , {videoTitle = "part3"
             , videoUrl = "Nixcc9fmTqQ"
-            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_3.jpg" }
+            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_3.jpg"
+            , position = 2 }
         ]
     }
 
@@ -301,8 +305,7 @@ initialModel =
     { width = 0
     , height = 0
     , selectMajorItem = initSelectMajorItem
-    , selectMinorItem = initSelectMinorItem
-    , selectMovie = "Js_8xBDhhwE" --TODO初期表示ここをどうするか
+    , selectMovie = "Js_8xBDhhwE" --TODO 初期表示ここをどうするか
     , menuStatus = Close
     , contentsStatus = Close
     , playlists = [
@@ -315,10 +318,6 @@ initialModel =
 
 initSelectMajorItem : Int
 initSelectMajorItem =
-    0
-
-initSelectMinorItem : Int
-initSelectMinorItem =
     0
 
 initScrollAllMoviePosition : Int
@@ -343,7 +342,7 @@ type Msg
     | MenuModalOpen
     | MenuModalClose
     | ContentsListChenge
-    | ChengeMovie ( Int, String )
+    | ChengeMovie ( Int, String, Int )
 
 -- UPDATE
 setCurrentDimensions : { a | width : b, height : c } -> ( b, c ) -> { a | width : b, height : c }
@@ -379,9 +378,33 @@ update msg model =
                 else
                     Close }, Cmd.none )
         
-        ChengeMovie ( newMajorItem, url ) ->
-            ( { model | selectMajorItem = newMajorItem
-                , selectMovie = url }, Cmd.none )
+        ChengeMovie ( newMajorItem, url, newMinorItem) ->
+            ( chengeMovie model ( newMajorItem, url, newMinorItem), Cmd.none  )
+
+chengeMovie : Model -> ( Int, String, Int ) -> Model 
+chengeMovie model ( newMajorItem, url, newMinorItem) =
+    let
+        newPlaylist = 
+            List.map ( setNewPlaylist ( newMajorItem, newMinorItem ) ) model.playlists
+    in
+        { model | selectMajorItem = newMajorItem
+        , selectMovie = url
+        , playlists = newPlaylist }
+
+setNewPlaylist : ( Int, Int ) -> Playlist -> Playlist
+setNewPlaylist ( newMajorItem, newMinorItem ) playlist =
+    let
+        maxPos =
+            List.length(playlist.videos) - 1 --"MovieContents" scroll maximum value
+    in
+    if playlist.index == newMajorItem then
+        { playlist | scrollMovieContentsPosition = 
+            if maxPos == newMinorItem then
+                newMinorItem - 1
+            else
+                newMinorItem }
+    else
+        playlist
 
 scroll : Model -> ( Int, Direction ) -> Model
 scroll model ( targetPlaylistIndex, direction ) =
@@ -443,7 +466,7 @@ movieElement : Model -> Html Msg
 movieElement model=
     Element.layout ( stylesheet model ) <|
         column None
-            {- TODO headerfooter固定
+            {- TODO headerfooter固定の場合
             [yScrollbar] [
                 headerLayout model
                 , el None
@@ -460,7 +483,7 @@ movieElement model=
                 , footerLayout model
             ] -}
             [][
-            if model.menuStatus == Open then --TODO スクロール固定したい
+            if model.menuStatus == Open then
                 column None
                     [](
                         menuModal model
@@ -536,13 +559,16 @@ headerLayout model =
             ]
         ]
 
+-- movieContents
 movieContentsLayout : Model -> List (Element Styles variation Msg)
 movieContentsLayout model=
     [ row None
         [ center ][
         Element.h1 Title
             [](
+                column None [][
                 Element.text "movie-contents"
+                ]
             )
         ]
     , row None
@@ -561,16 +587,13 @@ movieContentsLayout model=
             ]
         , column None
             [ EA.width (px ( model.width / 2.5 ) ) ][
-            column None -- TODO Picture
+            column None
                 [](
-                    List.map ( movieContentsSet model.selectMajorItem model.width model.height model.selectMovie ) model.playlists
+                    List.map ( movieContentsSet model.selectMajorItem
+                     model.width model.height model.selectMovie ) model.playlists
                 )
             ]
         ]
-    {-, if model.menuStatus == Open then
-        menuModal model
-    else
-        textLayout None [][] -}
     ]
 
 movieContentsSet : Int -> Float -> Float -> String -> Playlist -> Element Styles variation Msg
@@ -579,7 +602,7 @@ movieContentsSet selectMajorItem modelWidth modelHeight selectMovie movies =
         column None
             [ paddingBottom 30
             , EA.center ][
-            if (List.length(movies.videos) // 3 ) >= 1 --TODO リスト長÷3 画像が3本以上存在
+            if (List.length(movies.videos) // 3 ) >= 1 --"list length ÷ 3" : 3 or more images exist
                 && movies.scrollMovieContentsPosition > 0 then 
                 Element.button VideoButton
                     [ EA.width ( px ( modelWidth / 40 ) )
@@ -609,12 +632,12 @@ movieContentsSet selectMajorItem modelWidth modelHeight selectMovie movies =
                 , EA.height (px ( modelHeight / 1.5 ) ) 
                 , clipY](
                     List.map (
-                        movieContentsSettings modelWidth modelHeight 
-                            (toFloat movies.scrollMovieContentsPosition ) movies.index selectMovie
+                        movieContentsSettings modelWidth modelHeight
+                            movies.scrollMovieContentsPosition movies.index selectMovie
                     ) movies.videos
                 )
             , if List.length(movies.videos) > 2 
-                --TODO 現在の表示位置 < (リスト長 - 2 ) : 2は初期表示されている画像が2件の為
+                -- "Current display position < ( list length - 2 )" : "2" is because there are 2 images initially displayed.
                 && movies.scrollMovieContentsPosition < ( List.length(movies.videos) - 2 )then
                 Element.button VideoButton [ 
                     EA.width <| px ( modelWidth / 40 )
@@ -643,10 +666,10 @@ movieContentsSet selectMajorItem modelWidth modelHeight selectMovie movies =
     else
         column None
             [][]
-movieContentsSettings : Float -> Float -> Float -> Int -> String -> Video -> Element Styles variation Msg
+movieContentsSettings : Float -> Float -> Int -> Int -> String -> Video -> Element Styles variation Msg
 movieContentsSettings modelWidth modelHeight scrollMovieContentsPosition index selectMovie video =
     row None 
-        [ EA.moveUp ( ( modelHeight - modelHeight / 10 ) / 2.63 * ( scrollMovieContentsPosition ) ) ][
+        [ EA.moveUp ( ( modelHeight - modelHeight / 10 ) / 2.63 * ( toFloat scrollMovieContentsPosition ) ) ][
         column None
             [ spacing 3
             , paddingXY ( modelWidth / 170 ) ( modelHeight / 30 )
@@ -657,6 +680,7 @@ movieContentsSettings modelWidth modelHeight scrollMovieContentsPosition index s
                     ChengeMovie (
                         index
                         , video.videoUrl
+                        , video.position
                     )
                 ) 
                  ](
@@ -734,6 +758,12 @@ movieframeHeight : Float -> Int
 movieframeHeight mainScreenHeight=
     round mainScreenHeight // 2
 
+changeToElement : Html msg -> Element style variation msg
+changeToElement msg =
+    -- Change from Html to Element
+    html msg
+
+-- allMovieContents
 allMovieContentsLayout : Model -> List (Element Styles variation Msg)
 allMovieContentsLayout model=
     [ row None
@@ -758,11 +788,6 @@ allMovieContentsLayout model=
         ]
     ]
 
-changeToElement : Html msg -> Element style variation msg
-changeToElement msg =
-    -- Change from Html to Element
-    html msg
-
 allMovieContentsSet : Int -> Float -> Float -> Playlist -> Element Styles variation Msg
 allMovieContentsSet selectMajorItem modelWidth modelHeight movies = 
     if movies.index == selectMajorItem then
@@ -782,7 +807,7 @@ allMovieContentsSet selectMajorItem modelWidth modelHeight movies =
                 [ EA.width fill ][
                 row None
                     [ paddingXY 15 0 ][
-                    --TODO 動画が4件以上あるとき且つスクロールポジションが0より多きい
+                    -- When there are 4 or more images and the scroll position is greater than 0
                     if List.length(movies.videos) > 4
                         && movies.scrollAllMoviePosition > 0 then
                         Element.button VideoButton
@@ -819,8 +844,9 @@ allMovieContentsSet selectMajorItem modelWidth modelHeight movies =
                     )
                 , row None
                     [ paddingXY 15 0 ][
-                    if (List.length(movies.videos) // 5 ) >= 1 --TODO リスト長÷5 画像が5本以上存在
-                        --TODO 現在の表示位置 < (リスト長 - 4 ) : 4は初期表示されている画像が4件の為
+                    -- "list length ÷ 5" : There are 5 or more images
+                    if (List.length(movies.videos) // 5 ) >= 1
+                        --"Current display position < ( list length - 4 )" : "4" is because there are 4 images initially displayed.
                         && movies.scrollAllMoviePosition < (List.length(movies.videos) - 4) then 
                         Element.button VideoButton [ 
                             EA.width <| px ( modelWidth / 40 )
@@ -864,6 +890,7 @@ allMoviecontentsSettings modelWidth modelHeight index scrollAllMoviePosition vid
                     ChengeMovie (
                         index
                         , video.videoUrl
+                        , video.position
                     )
                 ) ](
                 column None[][
@@ -880,6 +907,7 @@ allMoviecontentsSettings modelWidth modelHeight index scrollAllMoviePosition vid
             ]
         ]
 
+-- common
 thumbnailframe : String -> Float -> Float -> List (Element Styles variation msg)
 thumbnailframe thumbnail mainScreenWidth mainScreenheight=
     [ row None [][
@@ -1076,6 +1104,7 @@ menuModal model =
         )
     ]
 
+contentsMenu : Element Styles variation msg
 contentsMenu = 
     row MenuModalButton
         [][

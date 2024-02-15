@@ -491,7 +491,6 @@ movieElement model=
             else
                 textLayout None 
                     [][]
-             
             , headerLayout model
             , el None
                 [ yScrollbar ] <|

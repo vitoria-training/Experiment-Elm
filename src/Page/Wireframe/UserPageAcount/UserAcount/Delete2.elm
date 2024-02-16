@@ -276,14 +276,17 @@ delete2PageLayout1 model=
                     ]
                 ]
             ]
-        , row None --TODO onclick未実装
+        , row None
             [ paddingXY 0 80 
             , center ][
             row None
                 [][
                 column None
                     [ width ( px ( model.width / 3 ) )
-                    , paddingRight 30 ][
+                    , paddingRight 30
+                    , onClick (
+                        Nothing --TODO Described when the "return to Home" function was implemented.
+                    ) ][
                     button ButtonWH
                         [ paddingXY 20 0 ](
                             Element.text "ホームへ戻る"

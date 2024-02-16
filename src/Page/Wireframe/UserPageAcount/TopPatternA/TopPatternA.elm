@@ -159,7 +159,7 @@ type Msg
     = Nothing
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
-    | ContentsListChenge
+    | ContentsChenge
 
 -- UPDATE
 setCurrentDimensions : { a | width : b, height : c } -> ( b, c ) -> { a | width : b, height : c }
@@ -178,7 +178,7 @@ update msg model =
         Nothing ->
             ( model, Cmd.none )
 
-        ContentsListChenge ->
+        ContentsChenge ->
             ( { model | contentsStatus = 
                 if model.contentsStatus == Close then
                     Open
@@ -202,6 +202,7 @@ topPatternAPageElement model=
                             List.concat [
                                 topPatternAPageLayout1 model
                                 , topPatternAPageLayout2 model
+                                , topPatternAPageLayout3 model
                             ]
                         )
                 , footerLayout model
@@ -293,7 +294,7 @@ topPatternAPageLayout1 model=
 topPatternAPageLayout2 : Model -> List (Element Styles variation msg)
 topPatternAPageLayout2 model=
     [ column None
-        [ height ( px model.height ) ][
+        [ height ( px ( model.height / 2 ) ) ][
         textLayout None
             [ spacingXY 25 25
             , center ][
@@ -304,85 +305,204 @@ topPatternAPageLayout2 model=
             ]
         , textLayout None
             [ paddingXY 10 10 ][
-                row TextBox
-                    [][
-                    column None
-                        [ width ( px ( model.width / 3.5 ) )
-                        , center ][
-                        row None
-                            [][
-                            image None 
-                                [ width (px ( model.width / 10 ) )
-                                , height ( px ( model.width / 10 ) )
-                                ]{
-                                    src = "/src/Picture/VITORIA_logo.jpg"
-                                    , caption = "VITORIA_logo"
-                                }
-                            ]
-                        , row None
-                            [][
-                                Element.text "movie contentsに関する説明を\nここに記載予定\n1234567890"
-                            ]
+            row TextBox
+                [][
+                column None
+                    [ width ( px ( model.width / 3.5 ) )
+                    , center ][
+                    row None
+                        [][
+                        image None 
+                            [ width (px ( model.width / 10 ) )
+                            , height ( px ( model.width / 10 ) )
+                            ]{
+                                src = "/src/Picture/VITORIA_logo.jpg"
+                                , caption = "VITORIA_logo"
+                            }
                         ]
-                    , column None
-                        [ width ( px ( model.width / 3.5 ) )
-                        , center ][
-                        row None
-                            [][
-                            image None 
-                                [ width (px ( model.width / 10 ) )
-                                , height ( px ( model.width / 10 ) )
-                                ]{
-                                    src = "/src/Picture/VITORIA_logo.jpg"
-                                    , caption = "VITORIA_logo"
-                                }
-                            ]
-                        , row None
-                            [][
-                                Element.text "document contentsに関する説明を\nここに記載予定\n1234567890"
-                            ]
-                        ]
-                    , column None
-                        [ width ( px ( model.width / 3.5 ) )
-                        , center ][
-                        row None
-                            [][
-                            image None 
-                                [ width (px ( model.width / 10 ) )
-                                , height ( px ( model.width / 10 ) )
-                                ]{
-                                    src = "/src/Picture/VITORIA_logo.jpg"
-                                    , caption = "VITORIA_logo"
-                                }
-                            ]
-                        , row None
-                            [][
-                                Element.text "option contentsに関する説明を\nここに記載予定\n1234567890"
-                            ]
+                    , row None
+                        [][
+                            Element.text "movie contentsに関する説明を\nここに記載予定\n1234567890"
                         ]
                     ]
-                , row TextBox
-                    [ width ( px ( model.width / 1.3) )
-                    , center
-                    , paddingTop 30 ][
-                    column None
-                        [ verticalCenter ][
-                            image None 
-                                [ width ( px ( model.width / 10 ) )
-                                , height ( px ( model.width / 10 ) )
-                                ]{
-                                    src = "/src/Picture/VITORIA_logo.jpg"
-                                    , caption = "VITORIA_logo"
-                                }
+                , column None
+                    [ width ( px ( model.width / 3.5 ) )
+                    , center ][
+                    row None
+                        [][
+                        image None 
+                            [ width (px ( model.width / 10 ) )
+                            , height ( px ( model.width / 10 ) )
+                            ]{
+                                src = "/src/Picture/VITORIA_logo.jpg"
+                                , caption = "VITORIA_logo"
+                            }
                         ]
-                    , column None
-                        [ verticalCenter ][
-                            Element.text "movie contentsに関する説明を\nここに記載予定\n左に動画を一本埋め込み予定\n1234567890"
+                    , row None
+                        [][
+                            Element.text "document contentsに関する説明を\nここに記載予定\n1234567890"
                         ]
                     ]
+                , column None
+                    [ width ( px ( model.width / 3.5 ) )
+                    , center ][
+                    row None
+                        [][
+                        image None 
+                            [ width (px ( model.width / 10 ) )
+                            , height ( px ( model.width / 10 ) )
+                            ]{
+                                src = "/src/Picture/VITORIA_logo.jpg"
+                                , caption = "VITORIA_logo"
+                            }
+                        ]
+                    , row None
+                        [][
+                            Element.text "option contentsに関する説明を\nここに記載予定\n1234567890"
+                        ]
+                    ]
+                ]
             ]
         ]
     ]
+
+topPatternAPageLayout3 : Model -> List (Element Styles variation Msg)
+topPatternAPageLayout3 model=
+    [ column None
+        [ height ( px ( model.height / 2 ) ) ][
+            if model.contentsStatus == Close then
+                textLayout None
+                    [ paddingXY 10 10 ][
+                    row TextBox
+                        [ width ( px ( model.width / 1.28) )
+                        , alignRight ][
+                        column None
+                            [][
+                            image None 
+                                [ width ( px ( model.width / 30 ) )
+                                , height ( px ( model.width / 30 ) )
+                                , onClick(
+                                    ContentsChenge
+                                )
+                                ]{
+                                src = "/src/Picture/plusButton.png"
+                                , caption = "PlusButton"
+                                }
+                            ]
+                        ]
+                    , contentsStatusClose model
+                    ]
+            else
+                textLayout None
+                    [ paddingXY 10 10 ][
+                    row TextBox
+                        [ width ( px ( model.width / 1.2) )
+                        , alignRight ][
+                        column None
+                            [][
+                            image None 
+                                [ width ( px ( model.width / 30 ) )
+                                , height ( px ( model.width / 30 ) )
+                                , onClick(
+                                    ContentsChenge
+                                )
+                                ]{
+                                src = "/src/Picture/minusButton.png"
+                                , caption = "MinusButton"
+                                }
+                            ]
+                        ]
+                    , contentsStatusOpen model
+                    ]
+            ]
+        ]
+
+contentsStatusClose : Model -> Element Styles variation msg
+contentsStatusClose model =
+    row TextBox
+        [ width fill
+        , center
+        , paddingTop 30 ][
+        column None
+            [][
+            column None
+                [ verticalCenter ][
+                image None
+                    [ width ( px ( model.width / 10 ) )
+                    , height ( px ( model.width / 10 ) )
+                    ]{
+                        src = "/src/Picture/VITORIA_logo.jpg"
+                        , caption = "VITORIA_logo"
+                    }
+                ]
+            , column None
+                [ verticalCenter ][
+                    Element.text "movie contentsに関する説明を\nここに記載予定\n左に動画を一本埋め込み予定\n1234567890"
+                ]
+            ]
+        ]
+
+contentsStatusOpen : Model -> Element Styles variation msg
+contentsStatusOpen model =
+    row TextBox
+        [ width fill
+        , center
+        , paddingTop 30 ][
+        column None
+            [ width ( px ( model.width / 3.4 ) )
+            , center ][
+            row None
+                [][
+                image None 
+                    [ width (px ( model.width / 10 ) )
+                    , height ( px ( model.width / 10 ) )
+                    ]{
+                        src = "/src/Picture/VITORIA_logo.jpg"
+                        , caption = "VITORIA_logo"
+                    }
+                ]
+            , row None
+                [][
+                    Element.text "movie contentsに関する説明を\nここに記載予定\n1234567890"
+                ]
+            ]
+        , column None
+            [ width ( px ( model.width / 3.4 ) )
+            , center ][
+            row None
+                [][
+                image None 
+                    [ width (px ( model.width / 10 ) )
+                    , height ( px ( model.width / 10 ) )
+                    ]{
+                        src = "/src/Picture/VITORIA_logo.jpg"
+                        , caption = "VITORIA_logo"
+                    }
+                ]
+            , row None
+                [][
+                    Element.text "document contentsに関する説明を\nここに記載予定\n1234567890"
+                ]
+            ]
+        , column None
+            [ width ( px ( model.width / 3.4 ) )
+            , center ][
+            row None
+                [][
+                image None 
+                    [ width (px ( model.width / 10 ) )
+                    , height ( px ( model.width / 10 ) )
+                    ]{
+                        src = "/src/Picture/VITORIA_logo.jpg"
+                        , caption = "VITORIA_logo"
+                    }
+                ]
+            , row None
+                [][
+                    Element.text "option contentsに関する説明を\nここに記載予定\n1234567890"
+                ]
+            ]
+        ]
 
 footerLayout : Model -> Element Styles variation msg
 footerLayout model =

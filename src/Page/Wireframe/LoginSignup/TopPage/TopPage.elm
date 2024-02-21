@@ -324,7 +324,7 @@ loginModal model =
                                         LoginModalClose
                                         )
                                     ]{
-                                        src = "../../../Picture/CloseButton.png"
+                                        src = "/src/Picture/CloseButton.png"
                                         , caption = "CloseButton"
                                     }
                                 ]
@@ -458,7 +458,7 @@ signUpModal model =
                                         SignUpModalClose
                                         )
                                     ]{
-                                        src = "../../../Picture/CloseButton.png"
+                                        src = "/src/Picture/CloseButton.png"
                                         , caption = "CloseButton"
                                     }
                                 ]

@@ -226,6 +226,7 @@ nameElement model=
                     [] <|
                     column Main
                         [ width fill
+                        , height ( px ( model.height - model.height / 10 - model.height / 5 ) )
                         , center
                         , verticalCenter
                         , paddingXY 0 20
@@ -338,12 +339,12 @@ namePageLayout1 model=
                 ]
             ]
         , row None --TODO onclick未実装
-            [ paddingXY 0 80 
+            [ paddingXY 0 50 
             , center ][
             row None
                 [][
                 column None
-                    [ width ( px ( model.width / 6 ) )
+                    [ width ( px ( model.width / 5 ) )
                     , paddingRight 30 ][
                     button ButtonWH
                         [ paddingXY 20 0 ](
@@ -351,7 +352,7 @@ namePageLayout1 model=
                         )
                     ]
                 , column None
-                    [ width ( px ( model.width / 6 ) )
+                    [ width ( px ( model.width / 5 ) )
                     , paddingLeft 30 ][
                     button ButtonBK
                         [ paddingXY 20 0 ](

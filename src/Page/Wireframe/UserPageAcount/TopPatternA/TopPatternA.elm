@@ -369,7 +369,7 @@ topPatternAPageLayout2 model=
 topPatternAPageLayout3 : Model -> List (Element Styles variation Msg)
 topPatternAPageLayout3 model=
     [ column None
-        [ height ( px ( model.height / 2 ) ) ][
+        [ height fill ][
             if model.contentsStatus == Close then
                 textLayout None
                     [ paddingXY 10 10 ][

@@ -325,9 +325,7 @@ headerLayout model =
 namePageLayout1 : Model -> List (Element Styles variation Msg)
 namePageLayout1 model=
     [ column None
-        [ height ( px ( model.height / 1.6 ) )
-        , yScrollbar
-        , width fill ][
+        [ width fill ][
             row None
                 [][
                 image None 
@@ -410,7 +408,7 @@ namePageLayout1 model=
                 ]
             ]
         , row None --TODO onclick未実装
-            [ paddingXY 0 80 
+            [ paddingXY 0 30 
             , center ][
             row None
                 [][

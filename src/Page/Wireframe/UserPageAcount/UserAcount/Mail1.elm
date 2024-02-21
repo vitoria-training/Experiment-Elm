@@ -245,6 +245,7 @@ mail1Element model=
                     [] <|
                     column Main
                         [ width fill
+                        , height ( px ( model.height - model.height / 10 - model.height / 5 ) )
                         , center
                         , verticalCenter
                         , paddingXY 0 20

@@ -1,4 +1,4 @@
-# Elm_React_TryOut
+# sprout
 
 ## Get starting with Elm!
 

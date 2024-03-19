@@ -1,4 +1,4 @@
-# Elm_React_TryOut
+# sprout
 
 ## Get starting with Elm!
 
@@ -56,3 +56,65 @@ https://www.linkedin.com/pulse/7-best-practices-writing-good-git-commitmessages-
 
 ### Pull Requests
 Please link the issue on the description. you can link the issue id by typing `#`
+
+## Starting Docker (elm) from VSCode
+reference https://zenn.dev/aoaoaoaoaoaoaoi/articles/5fdbb959616c8c#1.%E3%80%8Cdocker-compose.yml%E3%80%8D%E3%82%92%E4%BD%9C%E6%88%90
+
+### Directory structure
+```
+[ElmProject]
+  │
+  ├─docker-compose.yml
+  │
+  ├─Dockerfile
+  │
+  ├─(Other files)
+  ・
+  ・
+  ・
+```
+※This time, we will use the one already placed in the Elm project.
+
+### Insert Dev Container into VSCode
+Search for "Dev Container" in VSCode extensions and install it.
+
+### Open with docker
+1.Start "Docker Desktop".
+
+※Work with VSCode from here.
+
+2.Press "><" at the bottom left of VSCode.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/ddd9f05c-436c-4141-8866-f3a25196d7bf)
+(Can enter the development container.
+ If not Search for "Remote Development" in VSCode extensions and install it.)
+
+3.Select "Reopen in Container".
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/356b4f2c-4c6a-4f4d-a5b1-64a54d5a2303)
+
+4.Select “Open with docker-compose.yml”.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/92724578-ad83-49e3-9f63-446867b7154b)
+
+5.Don't select anything and press OK.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/d3f91fde-3557-4f0d-a1e1-71ab38951678)
+
+6.After confirming that the container is running on "Docker Desktop",
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/30875621-250e-4e84-9627-cb87ddb97456)
+confirm that you are in the development container with VSCode and start the terminal.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/9e22bcaa-7630-4a19-8f15-1eb39a963e14)
+
+7.Run the following command in the terminal.
+
+Build the Elm project.
+```
+elm reactor
+```
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/e2a40400-49b5-4d12-b49c-1acd0e569d80)
+
+8.Check that the project is displayed at http://localhost:8000/.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/9b25e915-a6a1-4e0e-820e-69ecdd366dd0)
+
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/c3ae3783-1029-45b6-80ff-6cf2f4d98d85)
+
+
+Display "/src/Page/Top/Top.elm" as a trial.
+![image](https://github.com/vitoria-training/Experiment-Elm/assets/129945608/1626105a-1a47-4c2c-a451-480bc8828e28)

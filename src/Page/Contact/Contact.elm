@@ -1,8 +1,9 @@
-module Page.About.About exposing (..)
+module Page.Contact.Contact exposing (..)
 
 import Page.Color as Color255
 import Task
 import Element exposing (..)
+import Element.Input as Input exposing (..)
 import Element.Attributes exposing (..)
 import Style exposing (..)
 import Style.Border as Border
@@ -63,8 +64,7 @@ stylesheet model =
             , Border.all 2
             ]
         , style TextBox
-            [ Border.top 3
-            , Font.lineHeight 2
+            [ Border.all 1
             ]
         ]
 
@@ -81,7 +81,7 @@ main =
     in
     Browser.element
         { init = \_ -> ( initialModel, Task.attempt handleResult Browser.Dom.getViewport )
-        , view = aboutPageElement
+        , view = contactPageElement
         , update = update
         , subscriptions = subscriptions
         }
@@ -93,22 +93,46 @@ subscriptions _ =
 -- MODEL
 type alias Model =
     { width : Float
-    , height : Float }
+    , height : Float
+    , name : String
+    , address : String
+    , title : String
+    , message : String }
 
 initialModel : Model
 initialModel =
     { width = 0
-    , height = 0 }
+    , height = 0
+    , name = ""
+    , address = ""
+    , title = ""
+    , message = "" }
 
 type Msg
     = Nothing
     | GotInitialViewport Viewport
     | Resize ( Float, Float )
+    | InputName String
+    | InputAddress String
+    | InputTitle String
+    | InputMessage String
 
 -- UPDATE
 setCurrentDimensions : { a | width : b, height : c } -> ( b, c ) -> { a | width : b, height : c }
 setCurrentDimensions model ( w, h ) =
     { model | width = w, height = h }
+setName : { a | name : b } -> b -> { a | name : b }
+setName model ( s ) =
+    { model | name = s }
+setAddress : { a | address : b } -> b -> { a | address : b }
+setAddress model ( s ) =
+    { model | address = s }
+setTitle : { a | title : b } -> b -> { a | title : b }
+setTitle model ( s ) =
+    { model | title = s }
+setMessage : { a | message : b } -> b -> { a | message : b }
+setMessage model ( s ) =
+    { model | message = s }
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
@@ -121,36 +145,48 @@ update msg model =
 
         Nothing ->
             ( model, Cmd.none )
+        
+        InputName s ->
+            ( setName model ( s ), Cmd.none )
+        
+        InputAddress s ->
+            ( setAddress model ( s ), Cmd.none )
+        
+        InputTitle s ->
+            ( setTitle model ( s ), Cmd.none )
+        
+        InputMessage s ->
+            ( setMessage model ( s ), Cmd.none )
 
-aboutPageElement : Model -> Html msg
-aboutPageElement model=
-    Element.layout (stylesheet model) <|
+contactPageElement : Model -> Html Msg
+contactPageElement model=
+    Element.layout (stylesheet model)  <|
         column None
-            [][
+            [] [
                 headerLayout model
                 , el None
                     [ height ( px ( model.height - ( model.height / 10 ) *2 ) )
-                        , yScrollbar
+                    , yScrollbar
                     ] <|
                     column Main
                         [ width fill
                         , center
                         , verticalCenter
-                        , paddingXY 0 20 
-                        ](
-                            List.concat [ aboutPageLayout model ]
+                        , yScrollbar
+                        , paddingTop ( model.height / 10 )
+                        ] (
+                            List.concat [ contactPageLayout model ]
                         )
                 , footerLayout model
             ]
-
 
 headerLayout : Model -> Element Styles variation msg
 headerLayout model =
     row Header
         [ spread
-            , paddingXY 30 20 
-            , height ( px ( model.height / 10 ) )
-            , width ( px ( model.width ) )
+        , paddingXY 30 20 
+        , height ( px ( model.height / 10 ) )
+        , width ( px ( model.width ) )
         ][
             el Logo
                 [ verticalCenter ] (
@@ -184,113 +220,107 @@ headerLayout model =
                 ]
         ]
 
-aboutPageLayout : Model -> List (Element Styles variation msg)
-aboutPageLayout model=
-    [ image None
-        [ width ( px ( model.width / 1.5 ) )
-        , height ( px ( model.height / 2.5 ) )
-        ]{
-            src = "../../Picture/Spacecat.png"
-            , caption = "Spacecat"
-        }
-    , textLayout None
+contactPageLayout : Model -> List (Element Styles variation Msg)
+contactPageLayout model=
+    [ textLayout None
         [ spacingXY 25 25 ][
             h1 Title
-                [](
-                    Element.text "会社概要"
-                )
-            , h3 Title
-                [](
-                    Element.text "ABOUT"
+                [ padding 10 ](
+                    Element.text "CONTACT"
                 )
         ]
     , textLayout None
-        [ paddingXY 10 10 ][
-            row TextBox
-                [][
-                    column None 
-                        [ verticalCenter
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text "会社名"
-                        ]
-                    , column None
-                        [ verticalCenter 
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text "株式会社XXXX"
-                        ]
-                ]
-            , row TextBox
-                [][
-                    column None
-                        [ verticalCenter
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text "設立"
-                        ]
-                    , column None
-                        [ verticalCenter 
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text "YYYY年MM月DD日"
-                        ]
-                ]
-            , row TextBox
-                [][
-                    column None
-                        [ verticalCenter
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text "資本金"
-                        ]
-                    , column None
-                        [ verticalCenter 
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text "X,XXX万円"
-                        ]
-                ]
-            , row TextBox
-                [ paddingBottom 10 ][
-                    column None
-                        [ verticalCenter
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text "事業内容"
-                        ]
-                    , column None
-                        [ verticalCenter 
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text 
-                            """PlayStation・Nintendo Switch向けコンシューマゲーム、
-                            \nソーシャルゲームの企画・開発
-                            \n・VR、AR、3Dコンテンツの開発
-                            \n・システムエンジニアリングサービス事業
-                            \n・ドローンメディア運営事業
-                            \n・IT関連事業の統合的ソリューションの展開"""
-                        ]
-                ]
-            , row TextBox
-                [ paddingBottom 10 ][
-                    column None
-                        [ verticalCenter
-                        , width ( px ( model.width / 3 ) ) ][
-                            row None
-                                [][
-                                    Element.text "所在地"
-                                ]
-                            , row None
-                                [][
-                                    image None [ width ( px ( model.width / 3.5 ) ) ]{
-                                        src = "../../Picture/TokyoStation.png"
-                                        , caption = "TokyoStation"
-                                    }
-                                ]
-                        ]
-                    , column None 
-                        [ verticalCenter
-                        , width ( px ( model.width / 3 ) ) ][
-                            Element.text 
-                            """〒100-0005 東京都千代田区丸の内１丁目
-                            \n東京メトロXX線「東京駅」XX出口から徒歩X分
-                            \nJRYY線「YY堀駅」YY出口から徒歩Y分
-                            \n都営ZZ線「ZZ駅」ZZ出口から徒歩Z分"""
-                        ]
-                ]
+        [ paddingTop 10 ][
+            Input.text TextBox
+                [ padding 10
+                , width ( px ( model.width / 3 ) ) ]{
+                onChange = InputName
+                , value = model.name
+                , label =
+                    Input.placeholder {
+                        label = Input.labelAbove (
+                            el None
+                                [ verticalCenter ] (
+                                    Element.text "氏名"
+                                )
+                        )
+                        , text = ""
+                    }
+                , options =[]
+                }
+        ]
+    , textLayout None
+        [ spacingXY 25 25
+        , paddingTop 10 ][
+            Input.email TextBox
+                [ padding 10
+                , width ( px ( model.width / 3 ) ) ]
+                { onChange = InputAddress
+                , value = model.address
+                , label =
+                    Input.placeholder {
+                        label = Input.labelAbove (
+                            el None
+                                [ verticalCenter ] (
+                                    Element.text "メールアドレス"
+                                )
+                        )
+                        , text = ""
+                    }
+                , options =[]
+                }
+        ]
+    , textLayout None
+        [ spacingXY 25 25
+        , paddingTop 10 ][
+            Input.text TextBox
+                [ padding 10
+                , width ( px ( model.width / 3 ) ) ]
+                { onChange = InputTitle
+                , value = model.title
+                , label =
+                    Input.placeholder{
+                        label = Input.labelAbove (
+                            el None
+                                [ verticalCenter ] (
+                                    Element.text "題名"
+                                )
+                        )
+                        , text = ""
+                    }
+                , options =[]
+                }
+        ]
+    , textLayout None
+        [ spacingXY 25 25
+        , paddingTop 10 ][
+            Input.multiline TextBox
+                [ padding 10
+                , width ( px ( model.width / 3 ) )
+                , height ( px ( model.height / 5 ) ) ] {
+                onChange = InputMessage
+                , value = model.message
+                , label =
+                    Input.placeholder { 
+                        label = Input.labelAbove (
+                            el None
+                                [ verticalCenter ] (
+                                    Element.text "メッセージ本文 (任意)"
+                                )
+                        )
+                        , text = ""
+                    }
+                , options =[]
+                }
+        ]
+    , textLayout None
+        [ spacingXY 25 25
+        , paddingTop 10
+        , paddingBottom 10 ][
+            button Button
+                [ paddingXY 20 0 ] (
+                    Element.text "送信"
+                )
         ]
     ]
 

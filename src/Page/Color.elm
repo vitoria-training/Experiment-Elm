@@ -46,6 +46,8 @@ module Page.Color
         , white
         , yellow
         , translucentGray
+        , pink
+        , clearBlue
         )
 
 {-| -}
@@ -286,3 +288,15 @@ darkCharcoal =
 translucentGray : Color
 translucentGray =
     rgba 33 43 54 0.4
+
+
+{-| -}
+pink : Color
+pink =
+    rgba 239 207 227 1
+
+
+{-| -}
+clearBlue : Color
+clearBlue =
+    rgba 52 101 164 0.2

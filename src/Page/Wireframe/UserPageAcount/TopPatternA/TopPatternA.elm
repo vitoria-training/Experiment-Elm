@@ -1,6 +1,6 @@
 module Page.Wireframe.UserPageAcount.TopPatternA.TopPatternA exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Attributes exposing (..)
@@ -84,7 +84,7 @@ stylesheet model =
             ]
         , style BKImage
             [ Style.Background.imageWith
-                { src = "/src/Picture/Spacecat.png"
+                { src = "/assets/image/Spacecat.png"
                 , position = ( 0.0, 0.0 )
                 , repeat = noRepeat
                 , size = size
@@ -222,7 +222,7 @@ headerLayout model =
                     [ width (px ( model.width / 25 ) )
                     , height ( px ( model.width / 25 ) )
                     ]{
-                        src = "/src/Picture/VITORIA_logo.jpg"
+                        src = "/assets/icon/VITORIA_logo.jpg"
                         , caption = "VITORIA_logo"
                     }
             )
@@ -316,7 +316,7 @@ topPatternAPageLayout2 model=
                             [ width (px ( model.width / 10 ) )
                             , height ( px ( model.width / 10 ) )
                             ]{
-                                src = "/src/Picture/VITORIA_logo.jpg"
+                                src = "/assets/icon/VITORIA_logo.jpg"
                                 , caption = "VITORIA_logo"
                             }
                         ]
@@ -334,7 +334,7 @@ topPatternAPageLayout2 model=
                             [ width (px ( model.width / 10 ) )
                             , height ( px ( model.width / 10 ) )
                             ]{
-                                src = "/src/Picture/VITORIA_logo.jpg"
+                                src = "/assets/icon/VITORIA_logo.jpg"
                                 , caption = "VITORIA_logo"
                             }
                         ]
@@ -352,7 +352,7 @@ topPatternAPageLayout2 model=
                             [ width (px ( model.width / 10 ) )
                             , height ( px ( model.width / 10 ) )
                             ]{
-                                src = "/src/Picture/VITORIA_logo.jpg"
+                                src = "/assets/icon/VITORIA_logo.jpg"
                                 , caption = "VITORIA_logo"
                             }
                         ]
@@ -385,7 +385,7 @@ topPatternAPageLayout3 model=
                                     ContentsChenge
                                 )
                                 ]{
-                                src = "/src/Picture/plusButton.png"
+                                src = "/assets/image/Button/plusButton.png"
                                 , caption = "PlusButton"
                                 }
                             ]
@@ -407,7 +407,7 @@ topPatternAPageLayout3 model=
                                     ContentsChenge
                                 )
                                 ]{
-                                src = "/src/Picture/minusButton.png"
+                                src = "/assets/image/Button/minusButton.png"
                                 , caption = "MinusButton"
                                 }
                             ]
@@ -431,7 +431,7 @@ contentsStatusClose model =
                     [ width ( px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                        src = "/src/Picture/VITORIA_logo.jpg"
+                        src = "/assets/icon/VITORIA_logo.jpg"
                         , caption = "VITORIA_logo"
                     }
                 ]
@@ -457,7 +457,7 @@ contentsStatusOpen model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                        src = "/src/Picture/VITORIA_logo.jpg"
+                        src = "/assets/icon/VITORIA_logo.jpg"
                         , caption = "VITORIA_logo"
                     }
                 ]
@@ -475,7 +475,7 @@ contentsStatusOpen model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                        src = "/src/Picture/VITORIA_logo.jpg"
+                        src = "/assets/icon/VITORIA_logo.jpg"
                         , caption = "VITORIA_logo"
                     }
                 ]
@@ -493,7 +493,7 @@ contentsStatusOpen model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                        src = "/src/Picture/VITORIA_logo.jpg"
+                        src = "/assets/icon/VITORIA_logo.jpg"
                         , caption = "VITORIA_logo"
                     }
                 ]
@@ -527,7 +527,7 @@ footerLayout model =
                         , width (px ( model.width / 20 ) )
                         , height ( px ( model.width / 20 ) )
                         ]{
-                            src = "/src/Picture/VITORIA_logo.jpg"
+                            src = "/assets/icon/VITORIA_logo.jpg"
                             , caption = "VITORIA_logo"
                         }
                     ]

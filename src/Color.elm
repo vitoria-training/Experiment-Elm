@@ -1,4 +1,4 @@
-module Page.Color
+module Color
     exposing
         ( Color
           -- , Gradient

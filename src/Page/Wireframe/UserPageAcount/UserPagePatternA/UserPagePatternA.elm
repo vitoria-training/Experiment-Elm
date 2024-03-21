@@ -1,6 +1,6 @@
 module Page.Wireframe.UserPageAcount.UserPagePatternA.UserPagePatternA exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Attributes exposing (..)
@@ -85,7 +85,7 @@ stylesheet model =
             ]
         , style BKImage
             [ Style.Background.imageWith
-                { src = "/src/Picture/Spacecat.png"
+                { src = "/assets/image/Spacecat.png"
                 , position = ( 0.0, 0.0 )
                 , repeat = noRepeat
                 , size = size
@@ -258,7 +258,7 @@ headerLayout model =
                 [ width (px ( model.width / 25 ) )
                 , height ( px ( model.width / 25 ) )
                 ]{
-                    src = "/src/Picture/VITORIA_logo.jpg"
+                    src = "/assets/icon/VITORIA_logo.jpg"
                     , caption = "VITORIA_logo"
                 }
         )
@@ -277,7 +277,7 @@ headerLayout model =
                         MenuModalClose
                         )
                     ]{
-                        src = "/src/Picture/CloseButton.png"
+                        src = "/assets/image/Button/CloseButton.png"
                         , caption = "MenuButton"
                     }
             else
@@ -288,7 +288,7 @@ headerLayout model =
                         MenuModalOpen
                         )
                     ]{
-                        src = "/src/Picture/hamburger.png"
+                        src = "/assets/image/Button/hamburger.png"
                         , caption = "MenuButton"
                     }
             ]
@@ -319,7 +319,7 @@ userPagePatternAPageLayout1 model=
                             [ width (px ( model.width / 10 ) )
                             , height ( px ( model.width / 10 ) )
                             ]{
-                                src = "/src/Picture/VITORIA_logo.jpg"
+                                src = "/assets/icon/VITORIA_logo.jpg"
                                 , caption = "VITORIA_logo"
                             }
                         ]
@@ -337,7 +337,7 @@ userPagePatternAPageLayout1 model=
                             [ width (px ( model.width / 10 ) )
                             , height ( px ( model.width / 10 ) )
                             ]{
-                                src = "/src/Picture/VITORIA_logo.jpg"
+                                src = "/assets/icon/VITORIA_logo.jpg"
                                 , caption = "VITORIA_logo"
                             }
                         ]
@@ -355,7 +355,7 @@ userPagePatternAPageLayout1 model=
                             [ width (px ( model.width / 10 ) )
                             , height ( px ( model.width / 10 ) )
                             ]{
-                                src = "/src/Picture/VITORIA_logo.jpg"
+                                src = "/assets/icon/VITORIA_logo.jpg"
                                 , caption = "VITORIA_logo"
                             }
                         ]
@@ -381,7 +381,7 @@ userPagePatternAPageLayout1 model=
                                     [ width ( px ( model.width / 10 ) )
                                     , height ( px ( model.width / 10 ) )
                                     ]{
-                                    src = "/src/Picture/VITORIA_logo.jpg"
+                                    src = "/assets/icon/VITORIA_logo.jpg"
                                     , caption = "VITORIA_logo"
                                     }
                                 ]
@@ -399,7 +399,7 @@ userPagePatternAPageLayout1 model=
                                     [ width ( px ( model.width / 10 ) )
                                     , height ( px ( model.width / 10 ) )
                                     ]{
-                                    src = "/src/Picture/VITORIA_logo.jpg"
+                                    src = "/assets/icon/VITORIA_logo.jpg"
                                     , caption = "VITORIA_logo"
                                     }
                                 ]
@@ -419,7 +419,7 @@ userPagePatternAPageLayout1 model=
                                 MovieModalOpen
                             )
                             ]{
-                                src = "/src/Picture/plusButton.png"
+                                src = "/assets/image/Button/plusButton.png"
                                 , caption = "PlusButton"
                             }
                         ]
@@ -439,7 +439,7 @@ userPagePatternAPageLayout1 model=
                                 MovieModalClose
                             )
                             ]{
-                                src = "/src/Picture/minusButton.png"
+                                src = "/assets/image/Button/minusButton.png"
                                 , caption = "MinusButton"
                             }
                         ]
@@ -465,7 +465,7 @@ moviecontentson model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                        src = "/src/Picture/VITORIA_logo.jpg"
+                        src = "/assets/icon/VITORIA_logo.jpg"
                         , caption = "VITORIA_logo"
                     }
                 ]
@@ -483,7 +483,7 @@ moviecontentson model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                        src = "/src/Picture/VITORIA_logo.jpg"
+                        src = "/assets/icon/VITORIA_logo.jpg"
                         , caption = "VITORIA_logo"
                     }
                 ]
@@ -501,7 +501,7 @@ moviecontentson model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                        src = "/src/Picture/VITORIA_logo.jpg"
+                        src = "/assets/icon/VITORIA_logo.jpg"
                         , caption = "VITORIA_logo"
                     }
                 ]
@@ -541,7 +541,7 @@ userPagePatternAPageLayout2 model=
                             OtherModalOpen
                         )
                         ]{
-                        src = "/src/Picture/plusButton.png"
+                        src = "/assets/image/Button/plusButton.png"
                         , caption = "PlusButton"
                         }
                     ]
@@ -561,7 +561,7 @@ userPagePatternAPageLayout2 model=
                             OtherModalClose
                         )
                         ]{
-                        src = "/src/Picture/minusButton.png"
+                        src = "/assets/image/Button/minusButton.png"
                         , caption = "MinusButton"
                         }
                     ]
@@ -582,7 +582,7 @@ otherContents model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                    src = "/src/Picture/VITORIA_logo.jpg"
+                    src = "/assets/icon/VITORIA_logo.jpg"
                     , caption = "VITORIA_logo"
                     }
                 ]
@@ -600,7 +600,7 @@ otherContents model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                    src = "/src/Picture/VITORIA_logo.jpg"
+                    src = "/assets/icon/VITORIA_logo.jpg"
                     , caption = "VITORIA_logo"
                     }
                 ]
@@ -618,7 +618,7 @@ otherContents model =
                     [ width (px ( model.width / 10 ) )
                     , height ( px ( model.width / 10 ) )
                     ]{
-                    src = "/src/Picture/VITORIA_logo.jpg"
+                    src = "/assets/icon/VITORIA_logo.jpg"
                     , caption = "VITORIA_logo"
                     }
                 ]
@@ -652,7 +652,7 @@ footerLayout model =
                         , width (px ( model.width / 20 ) )
                         , height ( px ( model.width / 20 ) )
                         ]{
-                            src = "/src/Picture/VITORIA_logo.jpg"
+                            src = "/assets/icon/VITORIA_logo.jpg"
                             , caption = "VITORIA_logo"
                         }
                     ]
@@ -736,7 +736,7 @@ menuModal model =
                                         [ width ( px ( model.width / 40 ) )
                                         , height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/minusButton.png"
+                                            src = "/assets/image/Button/minusButton.png"
                                             , caption = "MinusButton"
                                         }
                                     ]
@@ -747,7 +747,7 @@ menuModal model =
                                         [ width ( px ( model.width / 40 ) )
                                         , height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/plusButton.png"
+                                            src = "/assets/image/Button/plusButton.png"
                                             , caption = "PlusButton"
                                         }
                                     ]
@@ -802,7 +802,7 @@ menuModal model =
                                     [ width ( px ( model.width / 40 ) )
                                     , height ( px ( model.width / 40 ) )
                                     ]{
-                                        src = "/src/Picture/rightArrow.png"
+                                        src = "/assets/image/Button/rightArrow.png"
                                         , caption = "RightArrow"
                                     }
                                 ]
@@ -826,7 +826,7 @@ menuModal model =
                                 [ width ( px ( model.width / 40 ) )
                                 , height ( px ( model.width / 40 ) )
                                 ]{
-                                    src = "/src/Picture/rightArrow.png"
+                                    src = "/assets/image/Button/rightArrow.png"
                                     , caption = "RightArrow"
                                 }
                             ]

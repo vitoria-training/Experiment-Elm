@@ -1,4 +1,4 @@
-module Page.Wireframe.UserPageAcount.TopPatternA.TopPatternA exposing (..)
+module Page.Wireframe.UserPageAcount.TopPage.TopPage exposing (..)
 
 import Color as Color255
 import Task

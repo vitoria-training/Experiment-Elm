@@ -1,6 +1,6 @@
 module Page.Wireframe.UserPageAcount.Movie.Movie exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Attributes as EA exposing (..)
@@ -196,23 +196,23 @@ list1_Videos =
     , videos = [
         {videoTitle = "基本コマンド1" 
             , videoUrl = "Js_8xBDhhwE"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_1.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GitCourse/GitCourse_1.jpg"
             , position = 0 }
         , {videoTitle = "基本コマンド2"
             , videoUrl = "eZ9M16REQiQ"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_2.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GitCourse/GitCourse_2.jpg"
             , position = 1 }
         , {videoTitle = "GitHub_1"
             , videoUrl = "laz2u--LoTg"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_3.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GitCourse/GitCourse_3.jpg"
             , position = 2 }
         , {videoTitle = "GitHub_2"
             , videoUrl = "tHZ9yR8I81w"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_4.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GitCourse/GitCourse_4.jpg"
             , position = 3 }
         , {videoTitle = "git内部の仕組み"
             , videoUrl = "qLyUayBh-T8"
-            , thumbnail = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_5.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GitCourse/GitCourse_5.jpg"
             , position = 4 }
         ]
     }
@@ -226,19 +226,19 @@ list2_Videos =
     , videos = [
         {videoTitle = "古代ギリシャ-中世編" 
             , videoUrl = "kvOPZVjBsNA"
-            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_1.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_1.jpg"
             , position = 0 }
         , {videoTitle = "OOP-論理は物質の手足" 
             , videoUrl = "B3mgmghlEKY"
-            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_2.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_2.jpg"
             , position = 1 }
        , {videoTitle = "論理世界への一元化" 
             , videoUrl = "ClyBlJ8LCQg"
-            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_3.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_3.jpg"
             , position = 2 }
         , {videoTitle = "論理のみの世界 関数型パラダイム" 
             , videoUrl = "NGrLa92DHlc"
-            , thumbnail = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_4.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_4.jpg"
             , position = 3 }
         ]
     }
@@ -252,27 +252,27 @@ list3_Videos =
     , videos = [
         {videoTitle = "【初歩編】第1回" 
             , videoUrl = "Ht6R3OosXDk"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_1.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GameCourse/GameCourse_1.jpg"
             , position = 0 }
        , {videoTitle = "【初歩編】第2回" 
             , videoUrl = "9g-NnkrScng"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_2.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GameCourse/GameCourse_2.jpg"
             , position = 1 }
         , {videoTitle = "【初歩編】第3回" 
             , videoUrl = "f2SZjtkPF2Q"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_3.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GameCourse/GameCourse_3.jpg"
             , position = 2 }
         , {videoTitle = "【初歩編】第4回" 
             , videoUrl = "x4wB8ET-57Y"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_4.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GameCourse/GameCourse_4.jpg"
             , position = 3 }
         , {videoTitle = "番外編 プランナー編"
             , videoUrl = "7OvNuawE9ys"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourseEx_1.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GameCourse/GameCourseEx_1.jpg"
             , position = 4 }
         , {videoTitle = "番外編 インストラクター編"
             , videoUrl = "ZN9ywfx6XS4"
-            , thumbnail = "/src/Picture/MovieThumbnail/GameCourse/GameCourseEx_2.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/GameCourse/GameCourseEx_2.jpg"
             , position = 5 }
         ]
     }
@@ -286,15 +286,15 @@ list4_Videos =
     , videos = [
         {videoTitle = "part1"
             , videoUrl = "CVHci7zRaw4"
-            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_1.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_1.jpg"
             , position = 0 }
         , {videoTitle = "part2"
             , videoUrl = "62x0qPk7W24"
-            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_2.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_2.jpg"
             , position = 1 }
         , {videoTitle = "part3"
             , videoUrl = "Nixcc9fmTqQ"
-            , thumbnail = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_3.jpg"
+            , thumbnail = "/assets/image/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_3.jpg"
             , position = 2 }
         ]
     }
@@ -522,7 +522,7 @@ headerLayout model =
                 [ EA.width (px ( model.width / 25 ) )
                 , EA.height ( px ( model.width / 25 ) )
                 ]{
-                    src = "/src/Picture/VITORIA_logo.jpg"
+                    src = "/assets/icon/VITORIA_logo.jpg"
                     , caption = "VITORIA_logo"
                 }
             )
@@ -541,7 +541,7 @@ headerLayout model =
                         MenuModalClose
                         )
                     ]{
-                        src = "/src/Picture/CloseButton.png"
+                        src = "/assets/image/Button/CloseButton.png"
                         , caption = "MenuButton"
                     }
             else
@@ -552,7 +552,7 @@ headerLayout model =
                         MenuModalOpen
                         )
                     ]{
-                        src = "/src/Picture/hamburger.png"
+                        src = "/assets/image/Button/hamburger.png"
                         , caption = "MenuButton"
                     }
             ]
@@ -618,7 +618,7 @@ movieContentsSet selectMajorItem modelWidth modelHeight selectMovie movies =
                     [ EA.width ( px ( modelWidth / 40 ) )
                     , EA.height ( px ( modelWidth / 40 ) )
                     ]{ 
-                        src = "/src/Picture/UpButton.png"
+                        src = "/assets/image/Button/UpButton.png"
                         , caption = "UpButton"
                     }
                 )
@@ -654,7 +654,7 @@ movieContentsSet selectMajorItem modelWidth modelHeight selectMovie movies =
                     , EA.width <| px ( modelWidth / 40 )
                     , EA.height <| px ( modelWidth / 40 ) 
                     ]{
-                        src = "/src/Picture/DownButton.png"
+                        src = "/assets/image/Button/DownButton.png"
                         , caption = "DownButton" 
                     }
                 )
@@ -825,7 +825,7 @@ allMovieContentsSet selectMajorItem modelWidth modelHeight movies =
                             , EA.width <| px ( modelWidth / 40 )
                             , EA.height <| px ( modelWidth / 40 ) 
                             ]{ 
-                                src = "/src/Picture/Left.png"
+                                src = "/assets/image/Button/Left.png"
                                 , caption = "button_left"
                             }
                         )
@@ -863,7 +863,7 @@ allMovieContentsSet selectMajorItem modelWidth modelHeight movies =
                             , EA.width <| px ( modelWidth / 40 )
                             , EA.height <| px ( modelWidth / 40 ) 
                             ]{
-                                src = "/src/Picture/Right.png"
+                                src = "/assets/image/Button/Right.png"
                                 , caption = "button_right" 
                             }
                         )
@@ -943,7 +943,7 @@ footerLayout model =
                         , EA.width (px ( model.width / 20 ) )
                         , EA.height ( px ( model.width / 20 ) )
                         ]{
-                            src = "/src/Picture/VITORIA_logo.jpg"
+                            src = "/assets/icon/VITORIA_logo.jpg"
                             , caption = "VITORIA_logo"
                         }
                     ]
@@ -1024,7 +1024,7 @@ menuModal model =
                                         [ EA.width ( px ( model.width / 40 ) )
                                         , EA.height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/minusButton.png"
+                                            src = "/assets/image/Button/minusButton.png"
                                             , caption = "MinusButton"
                                         }
                                     ]
@@ -1035,7 +1035,7 @@ menuModal model =
                                         [ EA.width ( px ( model.width / 40 ) )
                                         , EA.height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/plusButton.png"
+                                            src = "/assets/image/Button/plusButton.png"
                                             , caption = "PlusButton"
                                         }
                                     ]
@@ -1062,7 +1062,7 @@ menuModal model =
                                     [ EA.width ( px ( model.width / 40 ) )
                                     , EA.height ( px ( model.width / 40 ) )
                                     ]{
-                                        src = "/src/Picture/rightArrow.png"
+                                        src = "/assets/image/Button/rightArrow.png"
                                         , caption = "RightArrow"
                                     }
                                 ]
@@ -1084,7 +1084,7 @@ menuModal model =
                                 [ EA.width ( px ( model.width / 40 ) )
                                 , EA.height ( px ( model.width / 40 ) )
                                 ]{
-                                    src = "/src/Picture/rightArrow.png"
+                                    src = "/assets/image/Button/rightArrow.png"
                                     , caption = "RightArrow"
                                 }
                             ]

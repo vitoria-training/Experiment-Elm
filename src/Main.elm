@@ -1,6 +1,6 @@
 module Main exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Input as Input exposing (..)
@@ -271,7 +271,7 @@ headerLayout model =
                         [ width ( px ( model.width / 25 ) )
                         , height ( px ( model.width / 25 ) )
                         ]{
-                            src = "/src/Picture/VITORIA_logo.jpg"
+                            src = "/assets/icon/VITORIA_logo.jpg"
                             , caption = "VITORIA_logo"
                         }
                 )
@@ -368,7 +368,7 @@ mainPageModal model =
                                         ModalClose
                                         )
                                     ]{
-                                        src = "/src/Picture/CloseButton.png"
+                                        src = "/assets/image/Button/CloseButton.png"
                                         , caption = "CloseButton"
                                     }
                                 ]

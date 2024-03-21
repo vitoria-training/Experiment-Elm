@@ -1,6 +1,6 @@
 module Page.Playlist.Playlist exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Attributes as EA exposing (..)

@@ -1,6 +1,6 @@
 module Page.Wireframe.UserPageAcount.UserAcount.Delete2 exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Attributes exposing (..)
@@ -230,7 +230,7 @@ headerLayout model =
                 [ width (px ( model.width / 25 ) )
                 , height ( px ( model.width / 25 ) )
                 ]{
-                    src = "/src/Picture/VITORIA_logo.jpg"
+                    src = "/assets/icon/VITORIA_logo.jpg"
                     , caption = "VITORIA_logo"
                 }
         )
@@ -321,7 +321,7 @@ footerLayout model =
                         , width (px ( model.width / 20 ) )
                         , height ( px ( model.width / 20 ) )
                         ]{
-                            src = "/src/Picture/VITORIA_logo.jpg"
+                            src = "/assets/icon/VITORIA_logo.jpg"
                             , caption = "VITORIA_logo"
                         }
                     ]

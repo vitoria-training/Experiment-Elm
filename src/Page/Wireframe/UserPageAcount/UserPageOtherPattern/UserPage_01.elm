@@ -1,6 +1,6 @@
 module Page.Wireframe.UserPageAcount.UserPageOtherPattern.UserPage_01 exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Attributes exposing (..)
@@ -202,56 +202,56 @@ movie_01 : Contentson
 movie_01 =
     { index = 0
     , title = "GitCourse"
-    , src = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_1.jpg"
+    , src = "/assets/image/MovieThumbnail/GitCourse/GitCourse_1.jpg"
     , text = "Git講習についての説明文をここに表示。\nテスト用の文言" }
 
 movie_02 : Contentson
 movie_02 =
     { index = 1
     , title = "ProgrammingParadigmCourse"
-    , src = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_1.jpg"
+    , src = "/assets/image/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_1.jpg"
     , text = "プログラミングパラダイム講習\nについての説明文をここに表示。\nテスト用の文言" }
 
 movie_03 : Contentson
 movie_03 =
     { index = 2
     , title = "GameCourse"
-    , src = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_1.jpg"
+    , src = "/assets/image/MovieThumbnail/GameCourse/GameCourse_1.jpg"
     , text = "ゲーム講習についての説明文をここに表示。\nテスト用の文言" }
 
 movie_04 : Contentson
 movie_04 =
     { index = 3
     , title = "SystemDesignCourse"
-    , src = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_1.jpg"
+    , src = "/assets/image/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_1.jpg"
     , text = "システムデザイン講習\nについての説明文をここに表示。\nテスト用の文言" }
 
 other_01 : Contentson
 other_01 =
     { index = 0
     , title = "GitCourse"
-    , src = "/src/Picture/MovieThumbnail/GitCourse/GitCourse_1.jpg"
+    , src = "/assets/image/MovieThumbnail/GitCourse/GitCourse_1.jpg"
     , text = "String" }
 
 other_02 : Contentson
 other_02 =
     { index = 1
     , title = "ProgrammingParadigmCourse"
-    , src = "/src/Picture/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_1.jpg"
+    , src = "/assets/image/MovieThumbnail/ProgrammingParadigmCourse/ProgrammingParadigmCourse_1.jpg"
     , text = "String" }
 
 other_03 : Contentson
 other_03 =
     { index = 2
     , title = "GameCourse"
-    , src = "/src/Picture/MovieThumbnail/GameCourse/GameCourse_1.jpg"
+    , src = "/assets/image/MovieThumbnail/GameCourse/GameCourse_1.jpg"
     , text = "String" }
 
 other_04 : Contentson
 other_04 =
     { index = 3
     , title = "SystemDesignCourse"
-    , src = "/src/Picture/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_1.jpg"
+    , src = "/assets/image/MovieThumbnail/SystemDesignCourse/SystemDesignCourse_1.jpg"
     , text = "String" }
 
 type Msg
@@ -369,7 +369,7 @@ headerLayout model =
                 [ width (px ( model.width / 25 ) )
                 , height ( px ( model.width / 25 ) )
                 ]{
-                    src = "/src/Picture/VITORIA_logo.jpg"
+                    src = "/assets/icon/VITORIA_logo.jpg"
                     , caption = "VITORIA_logo"
                 }
         )
@@ -388,7 +388,7 @@ headerLayout model =
                         MenuModalClose
                         )
                     ]{
-                        src = "/src/Picture/CloseButton.png"
+                        src = "/assets/image/Button/CloseButton.png"
                         , caption = "MenuButton"
                     }
             else
@@ -399,7 +399,7 @@ headerLayout model =
                         MenuModalOpen
                         )
                     ]{
-                        src = "/src/Picture/hamburger.png"
+                        src = "/assets/image/Button/hamburger.png"
                         , caption = "MenuButton"
                     }
             ]
@@ -460,7 +460,7 @@ setMoviecontents model =
                     )
                 )
                 ]{ 
-                src = "/src/Picture/Left.png"
+                src = "/assets/image/Button/Left.png"
                 , caption = "button_left"
                 }
             )
@@ -489,7 +489,7 @@ setMoviecontents model =
                     )
                 )
                 ]{ 
-                src = "/src/Picture/Right.png"
+                src = "/assets/image/Button/Right.png"
                 , caption = "button_right"
                 }
             )
@@ -550,7 +550,7 @@ otherContents model =
                         )
                     )
                     ]{ 
-                    src = "/src/Picture/Left.png"
+                    src = "/assets/image/Button/Left.png"
                     , caption = "button_left"
                     }
                 )
@@ -579,7 +579,7 @@ otherContents model =
                         )
                     )
                     ]{
-                    src = "/src/Picture/Right.png"
+                    src = "/assets/image/Button/Right.png"
                     , caption = "button_right"
                     }
                 )
@@ -695,7 +695,7 @@ setPosition position modelWidth contentsList =
             [ width ( px ( modelWidth / 40 ) )
             , height ( px ( modelWidth / 40 ) )
             ]{ 
-            src = "/src/Picture/UserPageOtherPattern/Black.png"
+            src = "/assets/image/Button/UserPageOtherPattern/Black.png"
             , caption = "Black"
             }
     else
@@ -703,7 +703,7 @@ setPosition position modelWidth contentsList =
             [ width ( px ( modelWidth / 40 ) )
             , height ( px ( modelWidth / 40 ) )
             ]{ 
-            src = "/src/Picture/UserPageOtherPattern/Gray.png"
+            src = "/assets/image/Button/UserPageOtherPattern/Gray.png"
             , caption = "Gray"
             }
 
@@ -730,7 +730,7 @@ footerLayout model =
                         , width (px ( model.width / 20 ) )
                         , height ( px ( model.width / 20 ) )
                         ]{
-                            src = "/src/Picture/VITORIA_logo.jpg"
+                            src = "/assets/icon/VITORIA_logo.jpg"
                             , caption = "VITORIA_logo"
                         }
                     ]
@@ -814,7 +814,7 @@ menuModal model =
                                         [ width ( px ( model.width / 40 ) )
                                         , height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/minusButton.png"
+                                            src = "/assets/image/Button/minusButton.png"
                                             , caption = "MinusButton"
                                         }
                                     ]
@@ -825,7 +825,7 @@ menuModal model =
                                         [ width ( px ( model.width / 40 ) )
                                         , height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/plusButton.png"
+                                            src = "/assets/image/Button/plusButton.png"
                                             , caption = "PlusButton"
                                         }
                                     ]
@@ -880,7 +880,7 @@ menuModal model =
                                     [ width ( px ( model.width / 40 ) )
                                     , height ( px ( model.width / 40 ) )
                                     ]{
-                                        src = "/src/Picture/rightArrow.png"
+                                        src = "/assets/image/Button/rightArrow.png"
                                         , caption = "RightArrow"
                                     }
                                 ]
@@ -904,7 +904,7 @@ menuModal model =
                                 [ width ( px ( model.width / 40 ) )
                                 , height ( px ( model.width / 40 ) )
                                 ]{
-                                    src = "/src/Picture/rightArrow.png"
+                                    src = "/assets/image/Button/rightArrow.png"
                                     , caption = "RightArrow"
                                 }
                             ]

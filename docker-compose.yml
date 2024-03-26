@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     volumes:
-      - ./:/work/experiment-elm
+      - ./:/work/sprout
       - /work/node_modules
     ports: 
       - "8000:8000"

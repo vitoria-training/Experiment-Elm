@@ -8,6 +8,8 @@ module Page.Wireframe.UserPageAcount.TopPage.TestPage.TestColor
         , greenPt3
         , greenPt4
         , greenPt5
+        , greenPt6
+        , clear
         )
 
 {-| -}
@@ -77,3 +79,13 @@ greenPt4 =
 greenPt5 : Color
 greenPt5 =
     rgba 138 226 52 0.8
+
+{-| -}
+greenPt6 : Color
+greenPt6 =
+    rgba 138 226 52 1.0
+
+{-| -}
+clear : Color
+clear =
+    rgba 255 255 255 0.7

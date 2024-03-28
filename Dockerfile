@@ -11,5 +11,6 @@ RUN curl -L -o elm.gz https://github.com/elm/compiler/releases/download/0.19.1/b
 RUN gunzip elm.gz
 RUN chmod +x elm 
 RUN sudo mv elm /usr/local/bin/
+RUN npm install -g elm-test-rs
 
 ENV PATH $PATH:/usr/local/bin

@@ -1,12 +1,11 @@
 version: '3.9'
 services:
-  experiment-elm:
+  front-tier-dev:
     build:
       context: .
       dockerfile: ./Dockerfile
     volumes:
-      - ./:/work/experiment-elm
-      - /work/node_modules
+      - ./:/work/sprout
     ports: 
       - "8000:8000"
     command: sleep infinity

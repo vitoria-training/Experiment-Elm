@@ -10,6 +10,20 @@ module Page.Wireframe.UserPageAcount.TopPage.TestPage.TestColor
         , greenPt5
         , greenPt6
         , clear
+        , buttonColorEnable
+        , buttonColorHovered
+        , buttonColorFocusedAndPlessed
+        , buttonColorDisable
+        , buttonColorDisableFont
+        , button2font
+        , button2font2
+        , button2border
+        , button2border2
+        , button2border3
+        , button2ColorHovered
+        , button2ColorFocusedAndPlessed
+        , button2ColorDisable
+        , button2ColorDisableFont
         )
 
 {-| -}
@@ -89,3 +103,81 @@ greenPt6 =
 clear : Color
 clear =
     rgba 255 255 255 0.7
+
+{-| -}
+buttonColorEnable : Color
+buttonColorEnable =
+    rgba 80 164 98 1.0
+
+{-| -}
+buttonColorHovered : Color
+buttonColorHovered =
+    rgba 94 171 111 1.0
+
+{-| -}
+buttonColorFocusedAndPlessed : Color
+buttonColorFocusedAndPlessed =
+    rgba 101 175 117 1.0
+
+{-| -}
+buttonColorDisable : Color
+buttonColorDisable =
+    rgba 227 227 228 1.0
+
+{-| -}
+buttonColorDisableFont : Color
+buttonColorDisableFont =
+    rgba 152 151 154 1.0
+
+{-| -}
+button2font : Color
+button2font =
+    rgba 124 187 137 1.0
+
+{-| -}
+button2font2 : Color
+button2font2 =
+    rgba 180 179 181 1.0
+
+{-| -}
+button2border : Color
+button2border =
+    rgba 121 116 126 1.0
+
+{-| -}
+button2border2 : Color
+button2border2 =
+    rgba 118 184 132 1.0
+
+{-| -}
+button2border3 : Color
+button2border3 =
+    rgba 235 235 235 1.0
+
+{-| -}
+button2ColorHovered : Color
+button2ColorHovered =
+    rgba 241 248 243 1.0
+
+{-| -}
+button2ColorFocusedAndPlessed : Color
+button2ColorFocusedAndPlessed =
+    rgba 234 244 236 1.0
+
+{-| -}
+button2ColorDisable : Color
+button2ColorDisable =
+    rgba 227 227 228 1.0
+
+{-| -}
+button2ColorDisableFont : Color
+button2ColorDisableFont =
+    rgba 152 151 154 1.0
+
+
+
+
+
+
+
+

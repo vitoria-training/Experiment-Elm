@@ -1,0 +1,74 @@
+/* styles.css */
+@font-face {
+    font-family: 'Francois One';
+    src: url('/fonts/Francois_One/FrancoisOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Noto Sans JP';
+    src: url('/fonts/Noto_Sans_JP/static/NotoSansJP-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Define additional weights and styles for Noto Sans JP */
+@font-face {
+    font-family: 'Noto Sans JP';
+    src: url('/fonts/Noto_Sans_JP/static/NotoSansJP-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Noto Sans JP';
+    src: url('/fonts/Noto_Sans_JP/static/NotoSansJP-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Noto Sans JP';
+    src: url('/fonts/Noto_Sans_JP/static/NotoSansJP-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+/* Montserrat font faces */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat/static/Montserrat-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat/static/Montserrat-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat/static/Montserrat-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat/static/Montserrat-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat/static/Montserrat-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+/* Add other weights/styles as needed */

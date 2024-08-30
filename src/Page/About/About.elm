@@ -1,6 +1,6 @@
 module Page.About.About exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Attributes exposing (..)
@@ -190,7 +190,7 @@ aboutPageLayout model=
         [ width ( px ( model.width / 1.5 ) )
         , height ( px ( model.height / 2.5 ) )
         ]{
-            src = "../../Picture/Spacecat.png"
+            src = "/assets/image/Spacecat.png"
             , caption = "Spacecat"
         }
     , textLayout None
@@ -276,7 +276,7 @@ aboutPageLayout model=
                             , row None
                                 [][
                                     image None [ width ( px ( model.width / 3.5 ) ) ]{
-                                        src = "../../Picture/TokyoStation.png"
+                                        src = "/assets/image/TokyoStation.png"
                                         , caption = "TokyoStation"
                                     }
                                 ]

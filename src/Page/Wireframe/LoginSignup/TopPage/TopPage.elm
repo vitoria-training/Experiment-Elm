@@ -1,6 +1,6 @@
 module Page.Wireframe.LoginSignup.TopPage.TopPage exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Input as Input exposing (..)
@@ -324,7 +324,7 @@ loginModal model =
                                         LoginModalClose
                                         )
                                     ]{
-                                        src = "/src/Picture/CloseButton.png"
+                                        src = "/assets/image/Button/CloseButton.png"
                                         , caption = "CloseButton"
                                     }
                                 ]
@@ -458,7 +458,7 @@ signUpModal model =
                                         SignUpModalClose
                                         )
                                     ]{
-                                        src = "/src/Picture/CloseButton.png"
+                                        src = "/assets/image/Button/CloseButton.png"
                                         , caption = "CloseButton"
                                     }
                                 ]

@@ -1,6 +1,6 @@
 module Page.Wireframe.UserPageAcount.UserHamburgerMenu.DeploymentAcount exposing (..)
 
-import Page.Color as Color255
+import Color as Color255
 import Task
 import Element exposing (..)
 import Element.Attributes exposing (..)
@@ -239,7 +239,7 @@ headerLayout model =
                 [ width (px ( model.width / 25 ) )
                 , height ( px ( model.width / 25 ) )
                 ]{
-                    src = "/src/Picture/VITORIA_logo.jpg"
+                    src = "/assets/icon/VITORIA_logo.jpg"
                     , caption = "VITORIA_logo"
                 }
             )
@@ -258,7 +258,7 @@ headerLayout model =
                         MenuModalClose
                         )
                     ]{
-                        src = "/src/Picture/CloseButton.png"
+                        src = "/assets/image/Button/CloseButton.png"
                         , caption = "MenuButton"
                     }
             else
@@ -269,7 +269,7 @@ headerLayout model =
                         MenuModalOpen
                         )
                     ]{
-                        src = "/src/Picture/hamburger.png"
+                        src = "/assets/image/Button/hamburger.png"
                         , caption = "MenuButton"
                     }
             ]
@@ -322,7 +322,7 @@ namePageLayout1 model=
                                             [ width ( px ( model.width / 40 ) )
                                             , height ( px ( model.width / 40 ) )
                                             ]{
-                                                src = "/src/Picture/rightArrow.png"
+                                                src = "/assets/image/Button/rightArrow.png"
                                                 , caption = "RightArrow"
                                             }
                                         ]
@@ -361,7 +361,7 @@ namePageLayout1 model=
                                             [ width ( px ( model.width / 40 ) )
                                             , height ( px ( model.width / 40 ) )
                                             ]{
-                                                src = "/src/Picture/rightArrow.png"
+                                                src = "/assets/image/Button/rightArrow.png"
                                                 , caption = "RightArrow"
                                             }
                                         ]
@@ -400,7 +400,7 @@ namePageLayout1 model=
                                             [ width ( px ( model.width / 40 ) )
                                             , height ( px ( model.width / 40 ) )
                                             ]{
-                                                src = "/src/Picture/rightArrow.png"
+                                                src = "/assets/image/Button/rightArrow.png"
                                                 , caption = "RightArrow"
                                             }
                                         ]
@@ -433,7 +433,7 @@ namePageLayout1 model=
                                         [ width ( px ( model.width / 40 ) )
                                         , height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/rightArrow.png"
+                                            src = "/assets/image/Button/rightArrow.png"
                                             , caption = "RightArrow"
                                         }
                                     ]
@@ -472,7 +472,7 @@ footerLayout model =
                         , width (px ( model.width / 20 ) )
                         , height ( px ( model.width / 20 ) )
                         ]{
-                            src = "/src/Picture/VITORIA_logo.jpg"
+                            src = "/assets/icon/VITORIA_logo.jpg"
                             , caption = "VITORIA_logo"
                         }
                     ]
@@ -555,7 +555,7 @@ menuModal model =
                                         [ width ( px ( model.width / 40 ) )
                                         , height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/minusButton.png"
+                                            src = "/assets/image/Button/minusButton.png"
                                             , caption = "MinusButton"
                                         }
                                     ]
@@ -566,7 +566,7 @@ menuModal model =
                                         [ width ( px ( model.width / 40 ) )
                                         , height ( px ( model.width / 40 ) )
                                         ]{
-                                            src = "/src/Picture/plusButton.png"
+                                            src = "/assets/image/Button/plusButton.png"
                                             , caption = "PlusButton"
                                         }
                                     ]
@@ -621,7 +621,7 @@ menuModal model =
                                     [ width ( px ( model.width / 40 ) )
                                     , height ( px ( model.width / 40 ) )
                                     ]{
-                                        src = "/src/Picture/rightArrow.png"
+                                        src = "/assets/image/Button/rightArrow.png"
                                         , caption = "RightArrow"
                                     }
                                 ]
@@ -645,7 +645,7 @@ menuModal model =
                                 [ width ( px ( model.width / 40 ) )
                                 , height ( px ( model.width / 40 ) )
                                 ]{
-                                    src = "/src/Picture/rightArrow.png"
+                                    src = "/assets/image/Button/rightArrow.png"
                                     , caption = "RightArrow"
                                 }
                             ]
